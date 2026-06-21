@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" preserveAspectRatio="xMidYMid slice">
+  <rect width="800" height="600" fill="#2d2d2d"/>
+  <text x="400" y="320" text-anchor="middle" fill="#e85d3b" font-family="Georgia,serif" font-size="120" font-weight="700" opacity="0.3">newz</text>
+  <rect x="280" y="150" width="240" height="400" rx="24" fill="#1a1a1a"/>
+  <rect x="295" y="170" width="210" height="360" rx="16" fill="#333"/>
+</svg>

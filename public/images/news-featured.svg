@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" preserveAspectRatio="xMidYMid slice">
+  <rect width="800" height="500" fill="#1a1a1a"/>
+  <rect x="100" y="150" width="250" height="300" rx="8" fill="#333"/>
+  <rect x="400" y="150" width="250" height="300" rx="8" fill="#444"/>
+  <text x="400" y="80" text-anchor="middle" fill="#e85d3b" font-family="system-ui" font-size="24" font-weight="700">CSS Design Awards 2024</text>
+</svg>
