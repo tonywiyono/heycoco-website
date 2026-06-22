@@ -60,7 +60,7 @@ export async function POST(request: NextRequest) {
     });
 
     const apiKey = process.env.RESEND_API_KEY;
-    const toEmail = process.env.CONTACT_TO_EMAIL ?? "hello@heycoco.agency";
+    const toEmail = process.env.CONTACT_TO_EMAIL ?? "weare@heycoco.agency";
 
     if (!apiKey) {
       console.log("[contact] Resend not configured. Submission:", {

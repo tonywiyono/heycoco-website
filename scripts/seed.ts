@@ -22,7 +22,7 @@ async function seed() {
     await payload.create({
       collection: "users",
       data: {
-        email: process.env.ADMIN_EMAIL ?? "admin@heycoco.agency",
+        email: process.env.ADMIN_EMAIL ?? "weare@heycoco.agency",
         password: process.env.ADMIN_PASSWORD ?? "ChangeMe123!",
         name: "Hey Coco Admin",
       },

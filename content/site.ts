@@ -4,7 +4,7 @@ export const site = {
   description:
     "Hey Coco! is a Jakarta-based creative agency specializing in brand design, social media management, content creation, and digital marketing.",
   url: "https://heycoco.agency",
-  email: "hello@heycoco.agency",
+  email: "weare@heycoco.agency",
   phone: "+62 812 3456 7890",
   location: "Based in Jakarta, Indonesia",
   whatsapp: "https://wa.me/6281234567890",
