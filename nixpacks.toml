@@ -2,7 +2,7 @@
 cmds = ["npm install --legacy-peer-deps"]
 
 [phases.build]
-cmds = ["npm run build"]
+cmds = ["npm run generate:types", "npm run generate:importmap", "npm run build"]
 
 [start]
 cmd = "npm run start"

@@ -174,7 +174,7 @@ export async function getHomePageData(locale: Locale = DEFAULT_LOCALE): Promise<
     };
 
     const navItems: NavItem[] =
-      settings.navItems?.map((item) => ({
+      settings.navItems?.map((item: { id: string; label: string; href: string }) => ({
         id: item.id,
         label: item.label,
         href: item.href,
