@@ -46,6 +46,12 @@ export default async function FrontendLayout({
     <html lang="en" className={`${bricolage.variable} h-full`}>
       <head>
         <JsonLd site={site} />
+        {/* Inline script to apply saved theme before paint — prevents flash */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `try{var t=localStorage.getItem('theme');if(t==='light')document.documentElement.classList.add('light')}catch(e){}`,
+          }}
+        />
       </head>
       <body className="min-h-full antialiased">
         <AppShell site={site} navItems={navItems} sidebarWhatsappCta={sidebarWhatsappCta}>

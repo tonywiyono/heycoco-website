@@ -23,7 +23,7 @@ const contactSchema = z.object({
 type ContactForm = z.infer<typeof contactSchema>;
 
 const inputClass =
-  "w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-text-primary placeholder:text-text-muted focus:border-accent focus:outline-none";
+  "w-full rounded-xl border border-border-interactive bg-surface-input px-4 py-3 text-sm text-text-primary placeholder:text-text-muted focus:border-accent focus:outline-none";
 
 export function Contact({ faqItems, site }: { faqItems: FaqItem[]; site: SiteInfo }) {
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");

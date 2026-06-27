@@ -10,7 +10,7 @@ type TagProps = {
 
 const colors = {
   accent: "bg-accent text-white",
-  muted: "bg-white/10 text-text-primary border border-white/10",
+  muted: "bg-surface-card text-text-primary border border-border-subtle",
   dark: "bg-black text-white",
 };
 

@@ -27,7 +27,7 @@ export function MenuButton({
       aria-label={open ? "Close menu" : label}
       aria-expanded={open}
       className={cn(
-        "group relative flex shrink-0 items-center justify-center rounded-full border border-white/20 transition-colors hover:border-white/40",
+        "group relative flex shrink-0 items-center justify-center rounded-full border border-border-interactive transition-colors hover:border-border-interactive-hover",
         dimensions,
         className,
       )}

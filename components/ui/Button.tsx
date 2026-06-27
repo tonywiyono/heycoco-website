@@ -14,10 +14,10 @@ const variants: Record<ButtonVariant, string> = {
   primary:
     "bg-accent text-white hover:bg-accent-hover border border-transparent",
   secondary:
-    "bg-surface-card text-text-primary hover:bg-white/10 border border-border-subtle",
-  ghost: "bg-transparent text-text-primary hover:bg-white/5 border-transparent",
+    "bg-surface-card text-text-primary hover:opacity-80 border border-border-subtle",
+  ghost: "bg-transparent text-text-primary hover:bg-surface-hover border-transparent",
   outline:
-    "bg-transparent text-text-primary border border-white/30 hover:border-white/60",
+    "bg-transparent text-text-primary border border-border-interactive hover:border-border-interactive-hover",
 };
 
 export function Button({

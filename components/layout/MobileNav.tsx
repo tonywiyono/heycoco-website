@@ -2,8 +2,10 @@
 
 import { MenuOverlay } from "@/components/layout/MenuOverlay";
 import { MenuButton } from "@/components/ui/MenuButton";
+import { ThemeToggle } from "@/components/ui/ThemeToggle";
 import type { NavItem, SiteInfo } from "@/lib/types/content";
 import { scrollToSection } from "@/lib/scroll-spy";
+import Image from "next/image";
 import { useState } from "react";
 
 export function MobileNav({ site, navItems }: { site: SiteInfo; navItems: NavItem[] }) {
@@ -11,15 +13,17 @@ export function MobileNav({ site, navItems }: { site: SiteInfo; navItems: NavIte
 
   return (
     <>
-      <header className="sticky top-0 z-50 flex items-center gap-3 bg-surface-sidebar px-4 py-4 lg:hidden">
+      <header className="sticky top-0 z-50 flex items-center gap-2 bg-surface-sidebar px-4 py-4 lg:hidden">
         <button
           type="button"
           onClick={() => scrollToSection("home")}
-          className="flex min-h-10 flex-1 items-center justify-center rounded-full bg-white px-5 py-2.5 text-sm font-semibold text-text-dark"
+          className="mr-auto flex items-center"
+          aria-label="Scroll to top"
         >
-          {site.name}
+          <Image src="/logo.svg" alt={site.name} width={28} height={28} />
         </button>
 
+        <ThemeToggle size="sm" />
         <MenuButton
           open={menuOpen}
           size="sm"

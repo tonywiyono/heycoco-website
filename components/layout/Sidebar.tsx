@@ -3,6 +3,7 @@
 import { MenuOverlay } from "@/components/layout/MenuOverlay";
 import { MenuButton } from "@/components/ui/MenuButton";
 import { SidebarCtaLink } from "@/components/ui/SidebarCtaLink";
+import { ThemeToggle } from "@/components/ui/ThemeToggle";
 import type { NavItem, SidebarCta, SiteInfo } from "@/lib/types/content";
 import { scrollToSection } from "@/lib/scroll-spy";
 import Image from "next/image";
@@ -23,7 +24,7 @@ function SocialIcon({
       target="_blank"
       rel="noopener noreferrer"
       aria-label={label}
-      className="flex h-9 w-9 items-center justify-center rounded-full border border-white/20 text-text-muted transition-colors hover:border-white/40 hover:text-text-primary"
+      className="flex h-9 w-9 items-center justify-center rounded-full border border-border-interactive text-text-muted transition-colors hover:border-border-interactive-hover hover:text-text-primary"
     >
       {children}
     </a>
@@ -45,19 +46,18 @@ export function Sidebar({
     <>
       <aside className="hidden lg:flex lg:fixed lg:inset-y-0 lg:left-0 lg:z-50 lg:w-[var(--sidebar-width)] lg:flex-col lg:justify-between lg:bg-surface-sidebar lg:px-8 lg:py-8">
         <div className="w-full">
-          <div className="flex w-full items-center gap-3">
-            <button
-              type="button"
-              onClick={() => scrollToSection("home")}
-              className="flex min-h-10 flex-1 items-center justify-center rounded-full bg-white px-5 py-2.5 text-sm font-semibold tracking-tight text-text-dark transition-opacity hover:opacity-90"
-            >
-              {site.name}
-            </button>
+          <div className="flex w-full items-center justify-end gap-2">
+            <ThemeToggle />
             <MenuButton open={menuOpen} onClick={() => setMenuOpen((prev) => !prev)} />
           </div>
 
-          <div className="mt-16 flex justify-center">
-            <div className="relative flex h-28 w-28 items-center justify-center">
+          <div className="mt-10 flex justify-center">
+            <button
+              type="button"
+              onClick={() => scrollToSection("home")}
+              className="relative flex h-28 w-28 items-center justify-center"
+              aria-label="Scroll to top"
+            >
               <svg viewBox="0 0 100 100" className="absolute inset-0 h-full w-full animate-spin-slow">
                 <defs>
                   <path
@@ -78,7 +78,7 @@ export function Sidebar({
                 height={36}
                 className="relative z-10"
               />
-            </div>
+            </button>
           </div>
         </div>
 
@@ -117,16 +117,16 @@ export function Sidebar({
             <SidebarCtaLink cta={sidebarWhatsappCta} />
 
             <button
-            type="button"
-            onClick={() => scrollToSection("contact")}
-            className="flex w-full items-center justify-center gap-2 rounded-full border border-white/30 py-3 text-sm font-medium transition-colors hover:border-white/60"
-          >
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
-              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
-              <polyline points="22,6 12,13 2,6" />
-            </svg>
-            Work With Us
-          </button>
+              type="button"
+              onClick={() => scrollToSection("contact")}
+              className="flex w-full items-center justify-center gap-2 rounded-full border border-border-interactive py-3 text-sm font-medium transition-colors hover:border-border-interactive-hover"
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                <polyline points="22,6 12,13 2,6" />
+              </svg>
+              Work With Us
+            </button>
           </div>
         </div>
       </aside>

@@ -86,7 +86,7 @@ export function MenuOverlay({ open, onClose, navItems, site }: MenuOverlayProps)
           <motion.button
             type="button"
             onClick={onClose}
-            className="absolute right-6 top-6 flex h-11 w-11 items-center justify-center rounded-full border border-white/20 text-2xl transition-colors hover:border-white/40"
+            className="absolute right-6 top-6 flex h-11 w-11 items-center justify-center rounded-full border border-border-interactive text-2xl transition-colors hover:border-border-interactive-hover"
             aria-label="Close menu"
             initial={{ opacity: 0, rotate: -90, scale: 0.8 }}
             animate={{ opacity: 1, rotate: 0, scale: 1 }}

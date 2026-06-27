@@ -19,7 +19,7 @@ export function Reviews({ testimonials, site }: ReviewsProps) {
           dark
           aside={
             <div className="mb-4 flex items-center justify-end gap-3 lg:mb-0">
-              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-sm font-bold text-accent">
+              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-border-subtle text-sm font-bold text-accent">
                 C
               </div>
               <div className="text-right text-sm">
@@ -39,7 +39,7 @@ export function Reviews({ testimonials, site }: ReviewsProps) {
           }
         />
 
-        <ul className="divide-y divide-white/10">
+        <ul className="divide-y divide-border-subtle">
           {testimonials.map((item) => (
             <li key={item.id} className="flex gap-6 py-8 first:pt-0 last:pb-0">
               <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-full">
