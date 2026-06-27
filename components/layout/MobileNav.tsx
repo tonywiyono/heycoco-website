@@ -20,7 +20,7 @@ export function MobileNav({ site, navItems }: { site: SiteInfo; navItems: NavIte
           className="mr-auto flex items-center"
           aria-label="Scroll to top"
         >
-          <Image src="/logo.svg" alt={site.name} width={28} height={28} />
+          <Image src="/logo.png" alt={site.name} width={32} height={32} />
         </button>
 
         <ThemeToggle size="sm" />

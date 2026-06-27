@@ -4,6 +4,7 @@ import { Section } from "@/components/layout/Section";
 import { BentoCard } from "@/components/ui/BentoCard";
 import { Tag } from "@/components/ui/Tag";
 import type { Award, HeroContent, ServiceTag } from "@/lib/types/content";
+import { motion } from "framer-motion";
 import Image from "next/image";
 import { useState } from "react";
 
@@ -12,6 +13,54 @@ type HeroProps = {
   services: ServiceTag[];
   awards: Award[];
 };
+
+type ScrambledTag = ServiceTag & { rotation: number };
+
+function ScrambledServices({ services }: { services: ServiceTag[] }) {
+  const [items, setItems] = useState<ScrambledTag[]>(() =>
+    services.map((s) => ({ ...s })),
+  );
+
+  const scramble = () => {
+    setItems((prev) => {
+      const arr = [...prev];
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      return arr.map((s) => ({
+        ...s,
+        rotation: Math.floor(Math.random() * 80) - 40,
+      }));
+    });
+  };
+
+  return (
+    <motion.div
+      onClick={scramble}
+      whileTap={{ scale: 0.96 }}
+      className="group relative mt-6 flex flex-1 cursor-pointer select-none flex-wrap content-center items-center gap-2"
+      title="Click to shuffle"
+    >
+      {items.map((service) => (
+        <motion.span
+          key={service.id}
+          layout
+          animate={{ rotate: service.rotation }}
+          transition={{ type: "spring", stiffness: 280, damping: 18 }}
+          className="inline-flex"
+        >
+          <Tag color={service.color} rotation={0}>
+            {service.label}
+          </Tag>
+        </motion.span>
+      ))}
+      <span className="absolute bottom-0 right-0 text-[10px] text-black/30 opacity-0 transition-opacity group-hover:opacity-100">
+        click to shuffle ↻
+      </span>
+    </motion.div>
+  );
+}
 
 export function Hero({ hero, services, awards }: HeroProps) {
   const [awardIndex, setAwardIndex] = useState(0);
@@ -82,20 +131,11 @@ export function Hero({ hero, services, awards }: HeroProps) {
         <div className="flex min-h-0 flex-col gap-3 sm:gap-4 lg:col-span-3 lg:row-span-2 lg:h-full">
           <BentoCard
             variant="light"
+            hover={false}
             className="flex min-h-[200px] flex-1 flex-col justify-between p-6 sm:p-8"
           >
             <p className="text-sm leading-relaxed text-black/70">{hero.introText}</p>
-            <div className="relative mt-6 flex flex-1 flex-wrap content-center items-center gap-2">
-              {services.map((service) => (
-                <Tag
-                  key={service.id}
-                  color={service.color}
-                  rotation={service.rotation}
-                >
-                  {service.label}
-                </Tag>
-              ))}
-            </div>
+            <ScrambledServices services={services} />
           </BentoCard>
 
           {award ? (
