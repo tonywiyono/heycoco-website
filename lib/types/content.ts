@@ -40,6 +40,7 @@ export type Project = {
   date: string;
   featured?: boolean;
   image: string;
+  video?: string;
   description: string;
   body?: string;
 };

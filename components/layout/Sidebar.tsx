@@ -46,7 +46,7 @@ export function Sidebar({
               </defs>
               <text className="fill-text-muted text-[9px] uppercase tracking-widest">
                 <textPath href="#circlePath">
-                  Award Winning Agency — Since 2021 — Hey Coco! —
+                  Hey Coco! Creative Agency — Hey Coco! Creative Agency —
                 </textPath>
               </text>
             </svg>
