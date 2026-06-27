@@ -1,7 +1,9 @@
 "use client";
 
-import type { NavItem, SiteInfo } from "@/lib/types/content";
 import { MenuOverlay } from "@/components/layout/MenuOverlay";
+import { MenuButton } from "@/components/ui/MenuButton";
+import { SidebarCtaLink } from "@/components/ui/SidebarCtaLink";
+import type { NavItem, SidebarCta, SiteInfo } from "@/lib/types/content";
 import { scrollToSection } from "@/lib/scroll-spy";
 import Image from "next/image";
 import { useState } from "react";
@@ -28,12 +30,20 @@ function SocialIcon({
   );
 }
 
-export function Sidebar({ site, navItems }: { site: SiteInfo; navItems: NavItem[] }) {
+export function Sidebar({
+  site,
+  navItems,
+  sidebarWhatsappCta,
+}: {
+  site: SiteInfo;
+  navItems: NavItem[];
+  sidebarWhatsappCta: SidebarCta;
+}) {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
     <>
-      <aside className="hidden lg:flex lg:fixed lg:inset-y-0 lg:left-0 lg:z-50 lg:w-[var(--sidebar-width)] lg:flex-col lg:justify-between lg:bg-surface-sidebar lg:px-6 lg:py-8">
+      <aside className="hidden lg:flex lg:fixed lg:inset-y-0 lg:left-0 lg:z-50 lg:w-[var(--sidebar-width)] lg:flex-col lg:justify-between lg:bg-surface-sidebar lg:px-8 lg:py-8">
         <div className="w-full">
           <div className="flex w-full items-center gap-3">
             <button
@@ -43,16 +53,7 @@ export function Sidebar({ site, navItems }: { site: SiteInfo; navItems: NavItem[
             >
               {site.name}
             </button>
-            <button
-              type="button"
-              onClick={() => setMenuOpen(true)}
-              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-white/20 transition-colors hover:border-white/40"
-              aria-label="Open menu"
-            >
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
-                <path d="M3 12h18M3 6h18M3 18h18" />
-              </svg>
-            </button>
+            <MenuButton open={menuOpen} onClick={() => setMenuOpen((prev) => !prev)} />
           </div>
 
           <div className="mt-16 flex justify-center">
@@ -112,7 +113,10 @@ export function Sidebar({ site, navItems }: { site: SiteInfo; navItems: NavItem[
             </SocialIcon>
           </div>
 
-          <button
+          <div className="space-y-3">
+            <SidebarCtaLink cta={sidebarWhatsappCta} />
+
+            <button
             type="button"
             onClick={() => scrollToSection("contact")}
             className="flex w-full items-center justify-center gap-2 rounded-full border border-white/30 py-3 text-sm font-medium transition-colors hover:border-white/60"
@@ -123,6 +127,7 @@ export function Sidebar({ site, navItems }: { site: SiteInfo; navItems: NavItem[
             </svg>
             Work With Us
           </button>
+          </div>
         </div>
       </aside>
 

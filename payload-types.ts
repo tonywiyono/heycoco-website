@@ -740,6 +740,26 @@ export interface SiteSetting {
         id?: string | null;
       }[]
     | null;
+  sidebarWhatsappCta: {
+    enabled?: boolean | null;
+    label: string;
+    /**
+     * Full WhatsApp link (e.g. https://wa.me/6281234567890)
+     */
+    url: string;
+    /**
+     * Hex color for button background
+     */
+    backgroundColor: string;
+    /**
+     * Hex color on hover
+     */
+    hoverBackgroundColor: string;
+    /**
+     * Hex color for button text
+     */
+    textColor: string;
+  };
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -795,6 +815,16 @@ export interface SiteSettingsSelect<T extends boolean = true> {
         value?: T;
         label?: T;
         id?: T;
+      };
+  sidebarWhatsappCta?:
+    | T
+    | {
+        enabled?: T;
+        label?: T;
+        url?: T;
+        backgroundColor?: T;
+        hoverBackgroundColor?: T;
+        textColor?: T;
       };
   updatedAt?: T;
   createdAt?: T;

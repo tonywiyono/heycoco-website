@@ -20,6 +20,7 @@ import type {
   ProcessStep,
   Project,
   ServiceTag,
+  SidebarCta,
   SiteInfo,
   TeamMember,
   TeamSectionContent,
@@ -30,10 +31,51 @@ import { draftMode } from "next/headers";
 const DEFAULT_LOCALE = "en" as const;
 type Locale = "en" | "id";
 
+function defaultSidebarWhatsappCta(overrides?: Partial<SidebarCta>): SidebarCta {
+  return {
+    enabled: true,
+    label: "Consult Through Whatsapp",
+    url: staticSite.whatsapp,
+    backgroundColor: "#25D366",
+    hoverBackgroundColor: "#20BD5A",
+    textColor: "#FFFFFF",
+    ...overrides,
+  };
+}
+
+function mapSidebarWhatsappCta(
+  settings: {
+    sidebarWhatsappCta?: {
+      enabled?: boolean | null;
+      label?: string | null;
+      url?: string | null;
+      backgroundColor?: string | null;
+      hoverBackgroundColor?: string | null;
+      textColor?: string | null;
+    } | null;
+  },
+  fallbackUrl: string,
+): SidebarCta {
+  const cta = settings.sidebarWhatsappCta;
+  const defaults = defaultSidebarWhatsappCta({ url: fallbackUrl });
+
+  if (!cta) return defaults;
+
+  return {
+    enabled: cta.enabled ?? defaults.enabled,
+    label: cta.label ?? defaults.label,
+    url: cta.url ?? defaults.url,
+    backgroundColor: cta.backgroundColor ?? defaults.backgroundColor,
+    hoverBackgroundColor: cta.hoverBackgroundColor ?? defaults.hoverBackgroundColor,
+    textColor: cta.textColor ?? defaults.textColor,
+  };
+}
+
 function staticHomeData(): HomePageData {
   return {
     site: { ...staticSite, copyright: staticSite.copyright },
     navItems: staticNavItems.map((item) => ({ ...item })),
+    sidebarWhatsappCta: defaultSidebarWhatsappCta(),
     hero: {
       headlineLine1: "Brand and",
       headlineLine2: "Design",
@@ -180,6 +222,8 @@ export async function getHomePageData(locale: Locale = DEFAULT_LOCALE): Promise<
         href: item.href,
       })) ?? staticNavItems.map((item) => ({ ...item }));
 
+    const sidebarWhatsappCta = mapSidebarWhatsappCta(settings, site.whatsapp);
+
     const hero: HeroContent = {
       headlineLine1: settings.headlineLine1 ?? "Brand and",
       headlineLine2: settings.headlineLine2 ?? "Design",
@@ -282,6 +326,7 @@ export async function getHomePageData(locale: Locale = DEFAULT_LOCALE): Promise<
     return {
       site,
       navItems,
+      sidebarWhatsappCta,
       hero,
       services: services.length ? services : staticHomeData().services,
       awards: awards.length ? awards : staticHomeData().awards,
@@ -409,7 +454,13 @@ export async function saveContactSubmission(input: {
   });
 }
 
-export async function getSiteInfo(locale: Locale = DEFAULT_LOCALE): Promise<{ site: SiteInfo; navItems: NavItem[] }> {
+export async function getSiteInfo(
+  locale: Locale = DEFAULT_LOCALE,
+): Promise<{ site: SiteInfo; navItems: NavItem[]; sidebarWhatsappCta: SidebarCta }> {
   const data = await getHomePageData(locale);
-  return { site: data.site, navItems: data.navItems };
+  return {
+    site: data.site,
+    navItems: data.navItems,
+    sidebarWhatsappCta: data.sidebarWhatsappCta,
+  };
 }

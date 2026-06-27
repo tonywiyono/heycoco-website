@@ -1,3 +1,12 @@
+export type SidebarCta = {
+  enabled: boolean;
+  label: string;
+  url: string;
+  backgroundColor: string;
+  hoverBackgroundColor: string;
+  textColor: string;
+};
+
 export type SiteInfo = {
   name: string;
   tagline: string;
@@ -120,6 +129,7 @@ export type TeamSectionContent = {
 export type HomePageData = {
   site: SiteInfo;
   navItems: NavItem[];
+  sidebarWhatsappCta: SidebarCta;
   hero: HeroContent;
   services: ServiceTag[];
   awards: Award[];

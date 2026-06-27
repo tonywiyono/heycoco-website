@@ -1,6 +1,7 @@
 "use client";
 
 import { MenuOverlay } from "@/components/layout/MenuOverlay";
+import { MenuButton } from "@/components/ui/MenuButton";
 import type { NavItem, SiteInfo } from "@/lib/types/content";
 import { scrollToSection } from "@/lib/scroll-spy";
 import { useState } from "react";
@@ -19,16 +20,11 @@ export function MobileNav({ site, navItems }: { site: SiteInfo; navItems: NavIte
           {site.name}
         </button>
 
-        <button
-          type="button"
-          onClick={() => setMenuOpen(true)}
-          className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-white/20"
-          aria-label="Open menu"
-        >
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
-            <path d="M3 12h18M3 6h18M3 18h18" />
-          </svg>
-        </button>
+        <MenuButton
+          open={menuOpen}
+          size="sm"
+          onClick={() => setMenuOpen((prev) => !prev)}
+        />
       </header>
 
       <MenuOverlay open={menuOpen} onClose={() => setMenuOpen(false)} navItems={navItems} site={site} />

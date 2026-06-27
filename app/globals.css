@@ -13,7 +13,7 @@
   --border-subtle: rgba(255, 255, 255, 0.08);
   --radius-card: 24px;
   --radius-pill: 9999px;
-  --sidebar-width: 280px;
+  --sidebar-width: 320px;
 }
 
 @theme inline {
@@ -29,7 +29,7 @@
   --color-border-subtle: var(--border-subtle);
   --radius-card: var(--radius-card);
   --radius-pill: var(--radius-pill);
-  --font-sans: var(--font-geist-sans);
+  --font-sans: var(--font-bricolage);
 }
 
 html {
@@ -119,7 +119,7 @@ body.lenis-stopped {
 body {
   background: var(--surface-base);
   color: var(--text-primary);
-  font-family: var(--font-geist-sans), system-ui, sans-serif;
+  font-family: var(--font-bricolage), system-ui, sans-serif;
 }
 
 :focus-visible {

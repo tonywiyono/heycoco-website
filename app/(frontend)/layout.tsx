@@ -2,12 +2,13 @@ import { AppShell } from "@/components/layout/AppShell";
 import { JsonLd } from "@/components/JsonLd";
 import { getSiteInfo } from "@/lib/cms";
 import type { Metadata } from "next";
-import { Geist } from "next/font/google";
+import { Bricolage_Grotesque } from "next/font/google";
 import "../globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const bricolage = Bricolage_Grotesque({
+  variable: "--font-bricolage",
   subsets: ["latin"],
+  display: "swap",
 });
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -39,15 +40,15 @@ export default async function FrontendLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const { site, navItems } = await getSiteInfo();
+  const { site, navItems, sidebarWhatsappCta } = await getSiteInfo();
 
   return (
-    <html lang="en" className={`${geistSans.variable} h-full`}>
+    <html lang="en" className={`${bricolage.variable} h-full`}>
       <head>
         <JsonLd site={site} />
       </head>
       <body className="min-h-full antialiased">
-        <AppShell site={site} navItems={navItems}>
+        <AppShell site={site} navItems={navItems} sidebarWhatsappCta={sidebarWhatsappCta}>
           {children}
         </AppShell>
       </body>

@@ -87,6 +87,58 @@ export const SiteSettings: GlobalConfig = {
             },
           ],
         },
+        {
+          label: "Sidebar",
+          fields: [
+            {
+              name: "sidebarWhatsappCta",
+              type: "group",
+              label: "WhatsApp CTA",
+              fields: [
+                {
+                  name: "enabled",
+                  type: "checkbox",
+                  defaultValue: true,
+                  label: "Show WhatsApp button",
+                },
+                {
+                  name: "label",
+                  type: "text",
+                  required: true,
+                  localized: true,
+                  defaultValue: "Consult Through Whatsapp",
+                },
+                {
+                  name: "url",
+                  type: "text",
+                  required: true,
+                  admin: { description: "Full WhatsApp link (e.g. https://wa.me/6281234567890)" },
+                },
+                {
+                  name: "backgroundColor",
+                  type: "text",
+                  required: true,
+                  defaultValue: "#25D366",
+                  admin: { description: "Hex color for button background" },
+                },
+                {
+                  name: "hoverBackgroundColor",
+                  type: "text",
+                  required: true,
+                  defaultValue: "#20BD5A",
+                  admin: { description: "Hex color on hover" },
+                },
+                {
+                  name: "textColor",
+                  type: "text",
+                  required: true,
+                  defaultValue: "#FFFFFF",
+                  admin: { description: "Hex color for button text" },
+                },
+              ],
+            },
+          ],
+        },
       ],
     },
   ],

@@ -63,6 +63,14 @@ async function seed() {
         value: stat.value,
         label: stat.label,
       })),
+      sidebarWhatsappCta: {
+        enabled: true,
+        label: "Consult Through Whatsapp",
+        url: site.whatsapp,
+        backgroundColor: "#25D366",
+        hoverBackgroundColor: "#20BD5A",
+        textColor: "#FFFFFF",
+      },
     },
   });
 
