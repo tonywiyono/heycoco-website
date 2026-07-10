@@ -14,7 +14,6 @@ type HeroProps = {
   hero: HeroContent;
   services: ServiceTag[];
   expertise: ExpertiseItem[];
-  expertiseTagline: string;
 };
 
 type ScrambledTag = ServiceTag & { rotation: number };
@@ -65,7 +64,7 @@ function ScrambledServices({ services }: { services: ServiceTag[] }) {
   );
 }
 
-export function Hero({ hero, services, expertise, expertiseTagline }: HeroProps) {
+export function Hero({ hero, services, expertise }: HeroProps) {
   const subheadLines = hero.subheadline.split("\n");
 
   return (
@@ -139,7 +138,7 @@ export function Hero({ hero, services, expertise, expertiseTagline }: HeroProps)
             <ScrambledServices services={services} />
           </BentoCard>
 
-          <HeroExpertise items={expertise} tagline={expertiseTagline} />
+          <HeroExpertise items={expertise} />
         </div>
       </div>
     </Section>

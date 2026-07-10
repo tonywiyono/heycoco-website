@@ -31,6 +31,3 @@ export const expertiseItems: ExpertiseItem[] = [
       "https://images.unsplash.com/photo-1557804506-669a67965ba0?auto=format&fit=crop&w=800&q=80",
   },
 ];
-
-export const expertiseTagline =
-  "Transform ideas into reality by combining creativity, strategy, and expertise.";
