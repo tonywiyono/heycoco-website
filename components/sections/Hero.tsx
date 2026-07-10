@@ -1,9 +1,11 @@
 "use client";
 
 import { Section } from "@/components/layout/Section";
+import { HeroExpertise } from "@/components/sections/HeroExpertise";
 import { BentoCard } from "@/components/ui/BentoCard";
 import { Tag } from "@/components/ui/Tag";
-import type { Award, HeroContent, ServiceTag } from "@/lib/types/content";
+import type { ExpertiseItem } from "@/content/expertise";
+import type { HeroContent, ServiceTag } from "@/lib/types/content";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { useState } from "react";
@@ -11,7 +13,8 @@ import { useState } from "react";
 type HeroProps = {
   hero: HeroContent;
   services: ServiceTag[];
-  awards: Award[];
+  expertise: ExpertiseItem[];
+  expertiseTagline: string;
 };
 
 type ScrambledTag = ServiceTag & { rotation: number };
@@ -62,9 +65,7 @@ function ScrambledServices({ services }: { services: ServiceTag[] }) {
   );
 }
 
-export function Hero({ hero, services, awards }: HeroProps) {
-  const [awardIndex, setAwardIndex] = useState(0);
-  const award = awards[awardIndex] ?? awards[0];
+export function Hero({ hero, services, expertise, expertiseTagline }: HeroProps) {
   const subheadLines = hero.subheadline.split("\n");
 
   return (
@@ -138,43 +139,7 @@ export function Hero({ hero, services, awards }: HeroProps) {
             <ScrambledServices services={services} />
           </BentoCard>
 
-          {award ? (
-            <BentoCard
-              variant="accent"
-              className="relative flex min-h-[160px] flex-1 flex-col justify-between p-6 sm:p-8"
-            >
-              <div className="flex flex-1 flex-col justify-center">
-                <p className="text-4xl font-bold leading-none">{award.icon}</p>
-                <p className="mt-3 text-sm font-semibold uppercase leading-snug tracking-wide">
-                  {award.title}
-                </p>
-              </div>
-              {awards.length > 1 ? (
-                <div className="flex justify-end gap-2">
-                  <button
-                    type="button"
-                    onClick={() =>
-                      setAwardIndex((i) => (i === 0 ? awards.length - 1 : i - 1))
-                    }
-                    className="flex h-9 w-9 items-center justify-center rounded-full border border-white/30 bg-white/10 text-sm transition-colors hover:bg-white/20"
-                    aria-label="Previous award"
-                  >
-                    ←
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() =>
-                      setAwardIndex((i) => (i === awards.length - 1 ? 0 : i + 1))
-                    }
-                    className="flex h-9 w-9 items-center justify-center rounded-full border border-white/30 bg-white/10 text-sm transition-colors hover:bg-white/20"
-                    aria-label="Next award"
-                  >
-                    →
-                  </button>
-                </div>
-              ) : null}
-            </BentoCard>
-          ) : null}
+          <HeroExpertise items={expertise} tagline={expertiseTagline} />
         </div>
       </div>
     </Section>
