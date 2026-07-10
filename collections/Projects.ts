@@ -56,6 +56,14 @@ export const Projects: CollectionConfig = {
       relationTo: "media",
     },
     {
+      name: "video",
+      type: "upload",
+      relationTo: "media",
+      admin: {
+        description: "Optional preview video (MP4). Plays on hover in the portfolio grid.",
+      },
+    },
+    {
       name: "description",
       type: "textarea",
       required: true,

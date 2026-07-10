@@ -51,7 +51,7 @@ async function seed() {
       headlineLine2: "Design",
       subheadline: "Hey Coco!, small agency\nwith big ideas",
       introText:
-        "Based in Jakarta, Indonesia. We're an agency focused on crafting experience design & development digital products.",
+        "Based in Jakarta & Bali. We're an agency focused on social media, content creation, and video production.",
       rating: "4.9/5",
       ratingLabel: "Based on 24 reviews on Clutch",
       teamHeadline: teamStats.headline,

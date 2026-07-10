@@ -3,10 +3,10 @@
 import { MenuOverlay } from "@/components/layout/MenuOverlay";
 import { MenuButton } from "@/components/ui/MenuButton";
 import { SidebarCtaLink } from "@/components/ui/SidebarCtaLink";
+import { SpinningLogo } from "@/components/ui/SpinningLogo";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
 import type { NavItem, SidebarCta, SiteInfo } from "@/lib/types/content";
 import { scrollToSection } from "@/lib/scroll-spy";
-import Image from "next/image";
 import { useState } from "react";
 
 export function Sidebar({
@@ -31,33 +31,7 @@ export function Sidebar({
 
         {/* Spinning logo — vertically centered in remaining space */}
         <div className="flex flex-1 items-center justify-center">
-          <button
-            type="button"
-            onClick={() => scrollToSection("home")}
-            className="relative flex h-40 w-40 items-center justify-center"
-            aria-label="Scroll to top"
-          >
-            <svg viewBox="0 0 100 100" className="absolute inset-0 h-full w-full animate-spin-slow">
-              <defs>
-                <path
-                  id="circlePath"
-                  d="M 50,50 m -37,0 a 37,37 0 1,1 74,0 a 37,37 0 1,1 -74,0"
-                />
-              </defs>
-              <text className="fill-text-muted text-[9px] uppercase tracking-widest">
-                <textPath href="#circlePath">
-                  Hey Coco! Creative Agency — Hey Coco! Creative Agency —
-                </textPath>
-              </text>
-            </svg>
-            <Image
-              src="/logo.png"
-              alt=""
-              width={52}
-              height={52}
-              className="relative z-10"
-            />
-          </button>
+          <SpinningLogo onClick={() => scrollToSection("home")} />
         </div>
 
         {/* Bottom info + CTAs */}

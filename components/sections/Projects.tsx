@@ -9,6 +9,7 @@ import type { Project } from "@/lib/types/content";
 import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
+import { createPortal } from "react-dom";
 import { useEffect, useRef, useState } from "react";
 
 /* ── Project modal ─────────────────────────────────────────────────────── */
@@ -21,8 +22,10 @@ function ProjectModal({
   onClose: () => void;
 }) {
   const videoRef = useRef<HTMLVideoElement>(null);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    setMounted(true);
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
     };
@@ -30,12 +33,16 @@ function ProjectModal({
     return () => document.removeEventListener("keydown", onKey);
   }, [onClose]);
 
-  return (
+  if (!mounted) return null;
+
+  // Portal renders directly at document.body — stays outside any
+  // Lenis-transformed container so position: fixed works correctly.
+  return createPortal(
     <motion.div
       role="dialog"
       aria-modal="true"
       aria-label={project.title}
-      className="fixed inset-0 z-[70] flex items-center justify-center p-4 sm:p-6"
+      className="fixed inset-0 z-[200] flex items-center justify-center p-4 sm:p-6"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
@@ -123,7 +130,8 @@ function ProjectModal({
           </div>
         </div>
       </motion.div>
-    </motion.div>
+    </motion.div>,
+    document.body,
   );
 }
 
@@ -174,8 +182,9 @@ function ProjectCard({
           >
             <Image
               src={project.image}
-              alt=""
+              alt={project.title}
               fill
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               className={`object-cover transition-all duration-500 group-hover:scale-105 ${
                 project.video && isHovered ? "opacity-0" : "opacity-100"
               }`}

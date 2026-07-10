@@ -12,64 +12,82 @@ export type Project = {
 
 export const projects: Project[] = [
   {
-    slug: "newz-magazine",
-    title: "Newz — Magazine Site",
-    category: "Online Magazine Website",
-    tags: ["UI/UX", "Web", "Product"],
-    date: "December 2023",
+    slug: "social-reels-launch",
+    title: "Social Reels Launch",
+    category: "Social Media Campaign",
+    tags: ["Social Media", "Video", "Content"],
+    date: "March 2025",
     featured: true,
-    image: "/images/project-newz.svg",
+    image:
+      "https://images.unsplash.com/photo-1611162616305-c69b3fa7fbe0?auto=format&fit=crop&w=1200&q=80",
+    video:
+      "https://assets.mixkit.co/videos/preview/mixkit-hands-holding-a-smart-phone-with-the-facebook-logo-34508-large.mp4",
     description:
-      "A digital magazine experience with editorial layouts and immersive storytelling.",
+      "A high-energy Instagram Reels series that grew reach by 3× in the first month through scroll-stopping short-form content.",
   },
   {
-    slug: "lw-rebrand",
-    title: "LW Rebrand",
-    category: "Brand Identity",
-    tags: ["Branding", "Visual Identity"],
-    date: "October 2023",
-    image: "/images/project-lw.svg",
+    slug: "brand-film-series",
+    title: "Brand Film Series",
+    category: "Video Production",
+    tags: ["Video", "Branding", "Content"],
+    date: "January 2025",
+    image:
+      "https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?auto=format&fit=crop&w=1200&q=80",
+    video:
+      "https://assets.mixkit.co/videos/preview/mixkit-man-under-multicolored-lights-1237-large.mp4",
     description:
-      "Complete brand refresh with bold typography and vibrant color system.",
+      "Cinematic brand films and cut-downs for paid social, built for both awareness and conversion.",
   },
   {
-    slug: "zumarcons",
-    title: "ZumarCons Firm",
-    category: "Architecture Website",
-    tags: ["Web", "UI/UX"],
-    date: "August 2023",
-    image: "/images/project-zumar.svg",
+    slug: "content-studio-drop",
+    title: "Content Studio Drop",
+    category: "Content Creation",
+    tags: ["Content", "Social Media", "Photo"],
+    date: "November 2024",
+    image:
+      "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1200&q=80",
+    video:
+      "https://assets.mixkit.co/videos/preview/mixkit-young-woman-vlogging-with-her-smartphone-41701-large.mp4",
     description:
-      "Premium architecture firm website showcasing sustainable design projects.",
+      "Monthly content drops — photography, short clips, and platform-native edits for a lifestyle brand.",
   },
   {
-    slug: "atlas-architecture",
-    title: "Atlas Architecture",
-    category: "Portfolio Site",
-    tags: ["Web", "Branding"],
-    date: "June 2023",
-    image: "/images/project-atlas.svg",
+    slug: "paid-social-creatives",
+    title: "Paid Social Creatives",
+    category: "Paid Ads",
+    tags: ["Paid Ads", "Video", "Social Media"],
+    date: "September 2024",
+    image:
+      "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=1200&q=80",
+    video:
+      "https://assets.mixkit.co/videos/preview/mixkit-hands-using-a-smartphone-with-a-green-screen-34509-large.mp4",
     description:
-      "Minimal portfolio for a boutique architecture studio in Southeast Asia.",
+      "Performance-first ad creatives tested across Meta and TikTok with rapid iteration on hooks and formats.",
   },
   {
-    slug: "the-unerio",
-    title: "The Unerio",
-    category: "E-commerce",
-    tags: ["Product", "UI/UX"],
-    date: "April 2023",
-    image: "/images/project-unerio.svg",
+    slug: "product-launch-content",
+    title: "Product Launch Content",
+    category: "Launch Campaign",
+    tags: ["Content", "Video", "Branding"],
+    date: "July 2024",
+    image:
+      "https://images.unsplash.com/photo-1557804506-669a67965ba0?auto=format&fit=crop&w=1200&q=80",
+    video:
+      "https://assets.mixkit.co/videos/preview/mixkit-woman-doing-a-live-stream-on-social-media-41702-large.mp4",
     description:
-      "Luxury lifestyle e-commerce with curated product storytelling.",
+      "Full launch toolkit: teaser reels, hero film, UGC-style cutdowns, and static assets for a product drop.",
   },
   {
-    slug: "super-clean",
-    title: "Super Clean",
-    category: "Brand Campaign",
-    tags: ["Branding", "Content"],
-    date: "February 2023",
-    image: "/images/project-clean.svg",
+    slug: "always-on-social",
+    title: "Always-On Social",
+    category: "Social Media Management",
+    tags: ["Social Media", "Content", "Strategy"],
+    date: "May 2024",
+    image:
+      "https://images.unsplash.com/photo-1432888622747-4eb9ef8eb70d?auto=format&fit=crop&w=1200&q=80",
+    video:
+      "https://assets.mixkit.co/videos/preview/mixkit-person-using-a-smartphone-34507-large.mp4",
     description:
-      "Full-funnel brand campaign for a sustainable cleaning products startup.",
+      "Always-on social system covering planning, production, publishing, and monthly performance reporting.",
   },
 ];

@@ -71,6 +71,47 @@ function mapSidebarWhatsappCta(
   };
 }
 
+function mapProjectFromDoc(
+  doc: {
+    slug: string;
+    title: string;
+    category: string;
+    tags?: Array<{ tag?: string | null }> | null;
+    date: string;
+    featured?: boolean | null;
+    image?: unknown;
+    video?: unknown;
+    description: string;
+    body?: unknown;
+  },
+  index: number,
+): Project {
+  const staticFallback =
+    staticProjects.find((p) => p.slug === doc.slug) ??
+    staticProjects[index % staticProjects.length];
+
+  const image = doc.image
+    ? mediaUrl(doc.image as Parameters<typeof mediaUrl>[0], staticFallback?.image ?? "")
+    : staticFallback?.image ?? "/images/project-newz.svg";
+
+  const video = doc.video
+    ? mediaUrl(doc.video as Parameters<typeof mediaUrl>[0], staticFallback?.video ?? "")
+    : staticFallback?.video;
+
+  return {
+    slug: doc.slug,
+    title: doc.title,
+    category: doc.category,
+    tags: (doc.tags ?? []).map((t) => t.tag).filter(Boolean) as string[],
+    date: doc.date,
+    featured: doc.featured ?? false,
+    image,
+    video: video || undefined,
+    description: doc.description,
+    body: doc.body ? JSON.stringify(doc.body) : undefined,
+  };
+}
+
 function staticHomeData(): HomePageData {
   return {
     site: { ...staticSite, copyright: staticSite.copyright },
@@ -81,7 +122,7 @@ function staticHomeData(): HomePageData {
       headlineLine2: "Design",
       subheadline: "Hey Coco!, small agency\nwith big ideas",
       introText:
-        "Based in Jakarta, Indonesia. We're an agency focused on crafting experience design & development digital products.",
+        "Based in Jakarta & Bali. We're an agency focused on social media, content creation, and video production.",
       rating: "4.9/5",
       ratingLabel: "Based on 24 reviews on Clutch",
     },
@@ -246,16 +287,9 @@ export async function getHomePageData(locale: Locale = DEFAULT_LOCALE): Promise<
       icon: doc.icon,
     }));
 
-    const projects: Project[] = projectsResult.docs.map((doc) => ({
-      slug: doc.slug,
-      title: doc.title,
-      category: doc.category,
-      tags: (doc.tags ?? []).map((t) => t.tag).filter(Boolean) as string[],
-      date: doc.date,
-      featured: doc.featured ?? false,
-      image: mediaUrl(doc.image, "/images/project-newz.svg"),
-      description: doc.description,
-    }));
+    const projects: Project[] = projectsResult.docs.map((doc, index) =>
+      mapProjectFromDoc(doc, index),
+    );
 
     const processSteps: ProcessStep[] = processStepsResult.docs.map((doc) => ({
       id: doc.key,
@@ -369,17 +403,7 @@ export async function getProjectBySlug(
     const doc = result.docs[0];
     if (!doc) return staticProjects.find((p) => p.slug === slug) ?? null;
 
-    return {
-      slug: doc.slug,
-      title: doc.title,
-      category: doc.category,
-      tags: (doc.tags ?? []).map((t) => t.tag).filter(Boolean) as string[],
-      date: doc.date,
-      featured: doc.featured ?? false,
-      image: mediaUrl(doc.image, "/images/project-newz.svg"),
-      description: doc.description,
-      body: doc.body ? JSON.stringify(doc.body) : undefined,
-    };
+    return mapProjectFromDoc(doc, 0);
   } catch (error) {
     console.error("[cms] Failed to load project:", error);
     return staticProjects.find((p) => p.slug === slug) ?? null;

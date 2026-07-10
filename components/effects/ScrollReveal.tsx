@@ -1,12 +1,8 @@
 "use client";
 
-import { useEffect, useRef, type ReactNode } from "react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { cn } from "@/lib/cn";
-import { getScrollRoot } from "@/lib/scroll";
-
-gsap.registerPlugin(ScrollTrigger);
+import { motion, useInView } from "framer-motion";
+import { useEffect, useRef, type ReactNode } from "react";
 
 type ScrollRevealProps = {
   children: ReactNode;
@@ -22,42 +18,28 @@ export function ScrollReveal({
   y = 48,
 }: ScrollRevealProps) {
   const ref = useRef<HTMLDivElement>(null);
+  const scrollRootRef = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
+    scrollRootRef.current = document.getElementById("main-scroll");
+  }, []);
 
-    const prefersReducedMotion = window.matchMedia(
-      "(prefers-reduced-motion: reduce)",
-    ).matches;
-
-    if (prefersReducedMotion) return;
-
-    const scroller = getScrollRoot() ?? undefined;
-
-    const tween = gsap.from(el, {
-      y,
-      opacity: 0,
-      duration: 0.9,
-      delay,
-      ease: "power3.out",
-      scrollTrigger: {
-        trigger: el,
-        scroller,
-        start: "top 88%",
-        toggleActions: "play none none none",
-      },
-    });
-
-    return () => {
-      tween.scrollTrigger?.kill();
-      tween.kill();
-    };
-  }, [delay, y]);
+  const isInView = useInView(ref, {
+    once: true,
+    amount: 0.15,
+    margin: "0px 0px -5% 0px",
+    root: scrollRootRef,
+  });
 
   return (
-    <div ref={ref} className={cn(className)}>
+    <motion.div
+      ref={ref}
+      className={cn(className)}
+      initial={{ y, opacity: 0 }}
+      animate={isInView ? { y: 0, opacity: 1 } : { y, opacity: 0 }}
+      transition={{ duration: 0.75, delay, ease: [0.16, 1, 0.3, 1] }}
+    >
       {children}
-    </div>
+    </motion.div>
   );
 }

@@ -20,7 +20,15 @@ export function MobileNav({ site, navItems }: { site: SiteInfo; navItems: NavIte
           className="mr-auto flex items-center"
           aria-label="Scroll to top"
         >
-          <Image src="/logo.png" alt={site.name} width={32} height={32} />
+          <div className="overflow-hidden rounded-full bg-neutral-900" style={{ width: 32, height: 32 }}>
+            <Image
+              src="/logo.png"
+              alt={site.name}
+              width={32}
+              height={32}
+              style={{ mixBlendMode: "screen", display: "block" }}
+            />
+          </div>
         </button>
 
         <ThemeToggle size="sm" />
