@@ -3,24 +3,28 @@
 import { BentoCard } from "@/components/ui/BentoCard";
 import type { ExpertiseItem } from "@/content/expertise";
 import { cn } from "@/lib/cn";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 const PEEK_PX = 10;
-const PEEK_HIT_PX = 28;
+const HOVER_ZONE_RATIO = 0.32;
 const AUTO_INTERVAL_MS = 5000;
 
 type HeroExpertiseProps = {
   items: ExpertiseItem[];
 };
 
+type HoverSide = "left" | "right" | null;
+
 function ExpertiseCardContent({
   item,
   isActive,
+  preview = false,
 }: {
   item: ExpertiseItem;
   isActive: boolean;
+  preview?: boolean;
 }) {
   return (
     <div className="flex h-full min-h-[220px] w-full flex-col p-4 sm:p-5">
@@ -48,8 +52,58 @@ function ExpertiseCardContent({
             />
           </div>
         </>
+      ) : preview ? (
+        <>
+          <p className="mt-2 line-clamp-2 text-xs leading-relaxed text-text-muted">
+            {item.description}
+          </p>
+          <div className="relative mt-3 aspect-[16/10] w-full overflow-hidden rounded-lg">
+            <Image
+              src={item.image}
+              alt=""
+              fill
+              sizes="200px"
+              className="object-cover"
+            />
+          </div>
+        </>
       ) : null}
     </div>
+  );
+}
+
+function PreviewCard({
+  item,
+  side,
+}: {
+  item: ExpertiseItem;
+  side: "left" | "right";
+}) {
+  const swing = side === "left" ? [-5, -2, -5] : [5, 2, 5];
+  const enterX = side === "left" ? -48 : 48;
+
+  return (
+    <motion.div
+      key={`preview-${side}-${item.id}`}
+      className={cn(
+        "pointer-events-none absolute top-0 z-30 h-full w-[46%] overflow-hidden rounded-2xl border border-border-subtle bg-surface-card shadow-2xl",
+        side === "left" ? "left-0 origin-left" : "right-0 origin-right",
+      )}
+      initial={{ opacity: 0, x: enterX, rotate: 0 }}
+      animate={{
+        opacity: 1,
+        x: side === "left" ? "6%" : "-6%",
+        rotate: swing,
+      }}
+      exit={{ opacity: 0, x: enterX, rotate: 0 }}
+      transition={{
+        opacity: { duration: 0.2 },
+        x: { type: "spring", stiffness: 280, damping: 22 },
+        rotate: { repeat: Infinity, duration: 2.4, ease: "easeInOut" },
+      }}
+    >
+      <ExpertiseCardContent item={item} isActive={false} preview />
+    </motion.div>
   );
 }
 
@@ -59,6 +113,7 @@ export function HeroExpertise({ items }: HeroExpertiseProps) {
   const [index, setIndex] = useState(1);
   const [instant, setInstant] = useState(false);
   const [paused, setPaused] = useState(false);
+  const [hoverSide, setHoverSide] = useState<HoverSide>(null);
 
   const count = items.length;
 
@@ -69,6 +124,9 @@ export function HeroExpertise({ items }: HeroExpertiseProps) {
   }, [items, count]);
 
   const slideWidth = viewportWidth > 0 ? viewportWidth - PEEK_PX * 2 : 0;
+
+  const prevItem = loopItems[index - 1];
+  const nextItem = loopItems[index + 1];
 
   useEffect(() => {
     const el = viewportRef.current;
@@ -82,15 +140,30 @@ export function HeroExpertise({ items }: HeroExpertiseProps) {
     return () => observer.disconnect();
   }, []);
 
+  const updateHoverSide = useCallback((clientX: number) => {
+    const rect = viewportRef.current?.getBoundingClientRect();
+    if (!rect || count <= 1) {
+      setHoverSide(null);
+      return;
+    }
+
+    const ratio = (clientX - rect.left) / rect.width;
+    if (ratio < HOVER_ZONE_RATIO) setHoverSide("left");
+    else if (ratio > 1 - HOVER_ZONE_RATIO) setHoverSide("right");
+    else setHoverSide(null);
+  }, [count]);
+
   const goNext = useCallback(() => {
     if (count <= 1) return;
     setInstant(false);
+    setHoverSide(null);
     setIndex((i) => i + 1);
   }, [count]);
 
   const goPrev = useCallback(() => {
     if (count <= 1) return;
     setInstant(false);
+    setHoverSide(null);
     setIndex((i) => i - 1);
   }, [count]);
 
@@ -131,15 +204,15 @@ export function HeroExpertise({ items }: HeroExpertiseProps) {
         hover={false}
         className="relative flex min-h-[300px] flex-1 flex-col overflow-hidden p-0 sm:min-h-[340px]"
       >
-        {/* Fixed title — does not scroll with cards */}
         <h3 className="px-5 pt-5 text-lg font-bold text-text-primary sm:px-6 sm:pt-6 sm:text-xl">
           Our Expertise
         </h3>
 
-        {/* Full-width carousel track */}
         <div
           ref={viewportRef}
           className="relative mt-4 min-h-[240px] w-full flex-1 overflow-hidden pb-5 sm:pb-6"
+          onMouseMove={(e) => updateHoverSide(e.clientX)}
+          onMouseLeave={() => setHoverSide(null)}
         >
           {slideWidth > 0 && (
             <motion.div
@@ -172,24 +245,34 @@ export function HeroExpertise({ items }: HeroExpertiseProps) {
             </motion.div>
           )}
 
-          {/* Click left peek → previous card */}
+          {/* Swinging preview overlays */}
+          <AnimatePresence>
+            {hoverSide === "left" && prevItem && (
+              <PreviewCard item={prevItem} side="left" />
+            )}
+            {hoverSide === "right" && nextItem && (
+              <PreviewCard item={nextItem} side="right" />
+            )}
+          </AnimatePresence>
+
           {count > 1 && (
             <button
               type="button"
               onClick={goPrev}
-              className="absolute left-0 top-0 z-20 h-full cursor-pointer bg-transparent"
-              style={{ width: PEEK_HIT_PX }}
+              onMouseEnter={() => setHoverSide("left")}
+              className="absolute left-0 top-0 z-40 h-full cursor-pointer bg-transparent"
+              style={{ width: `${HOVER_ZONE_RATIO * 100}%` }}
               aria-label="Previous expertise"
             />
           )}
 
-          {/* Click right peek → next card */}
           {count > 1 && (
             <button
               type="button"
               onClick={goNext}
-              className="absolute right-0 top-0 z-20 h-full cursor-pointer bg-transparent"
-              style={{ width: PEEK_HIT_PX }}
+              onMouseEnter={() => setHoverSide("right")}
+              className="absolute right-0 top-0 z-40 h-full cursor-pointer bg-transparent"
+              style={{ width: `${HOVER_ZONE_RATIO * 100}%` }}
               aria-label="Next expertise"
             />
           )}
