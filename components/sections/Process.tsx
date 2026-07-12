@@ -25,7 +25,7 @@ export function Process({ processSteps, processStats }: ProcessProps) {
           description="Business challenges are tough, but we have a proven record of elevating our partners to their next and best selves."
         />
 
-        <Accordion items={accordionItems} />
+        <Accordion items={accordionItems} variant="light" />
       </SectionPanel>
 
       <div className="grid gap-3 sm:grid-cols-3">

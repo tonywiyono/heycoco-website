@@ -44,8 +44,9 @@ export function Accordion({
               type="button"
               className={cn(
                 "flex w-full items-center justify-between gap-4 py-5 text-left transition-colors",
-                isOpen && "text-accent",
-                !isOpen && (isLight ? "text-text-dark" : "text-text-primary"),
+                isLight
+                  ? "text-text-dark"
+                  : cn(isOpen && "text-accent", !isOpen && "text-text-primary"),
               )}
               aria-expanded={isOpen}
               aria-controls={`accordion-panel-${item.id}`}
