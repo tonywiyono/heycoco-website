@@ -8,6 +8,7 @@ import Image from "next/image";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 const PEEK_PX = 10;
+const PEEK_HIT_PX = 28;
 const AUTO_INTERVAL_MS = 5000;
 
 type HeroExpertiseProps = {
@@ -22,7 +23,7 @@ function ExpertiseCardContent({
   isActive: boolean;
 }) {
   return (
-    <div className="flex h-full w-full flex-col p-4 sm:p-5">
+    <div className="flex h-full min-h-[220px] w-full flex-col p-4 sm:p-5">
       <h4
         className={cn(
           "text-sm font-semibold leading-snug sm:text-base",
@@ -32,9 +33,9 @@ function ExpertiseCardContent({
         {item.title}
       </h4>
 
-      {isActive && (
+      {isActive ? (
         <>
-          <p className="mt-3 text-xs leading-relaxed text-white/85 sm:text-sm">
+          <p className="mt-3 text-xs leading-relaxed text-white/90 sm:text-sm">
             {item.description}
           </p>
           <div className="relative mt-4 aspect-[4/3] w-full overflow-hidden rounded-xl">
@@ -47,7 +48,7 @@ function ExpertiseCardContent({
             />
           </div>
         </>
-      )}
+      ) : null}
     </div>
   );
 }
@@ -93,7 +94,6 @@ export function HeroExpertise({ items }: HeroExpertiseProps) {
     setIndex((i) => i - 1);
   }, [count]);
 
-  // Jump to real slide after reaching clones (infinite loop)
   useEffect(() => {
     if (count <= 1) return;
 
@@ -114,10 +114,8 @@ export function HeroExpertise({ items }: HeroExpertiseProps) {
     }
   }, [index, count]);
 
-  // Auto-advance every 5 seconds
   useEffect(() => {
     if (count <= 1 || paused) return;
-
     const timer = window.setInterval(goNext, AUTO_INTERVAL_MS);
     return () => window.clearInterval(timer);
   }, [count, goNext, paused, index]);
@@ -128,71 +126,75 @@ export function HeroExpertise({ items }: HeroExpertiseProps) {
 
   return (
     <div onMouseEnter={() => setPaused(true)} onMouseLeave={() => setPaused(false)}>
-    <BentoCard
-      variant="dark"
-      hover={false}
-      className="relative flex min-h-[300px] flex-1 flex-col overflow-hidden p-5 sm:min-h-[340px] sm:p-6"
-    >
-      <h3 className="mb-4 text-lg font-bold text-text-primary sm:text-xl">Our Expertise</h3>
-
-      <div
-        ref={viewportRef}
-        className="relative min-h-[220px] flex-1 overflow-hidden"
+      <BentoCard
+        variant="dark"
+        hover={false}
+        className="relative flex min-h-[300px] flex-1 flex-col overflow-hidden p-0 sm:min-h-[340px]"
       >
-        {slideWidth > 0 && (
-          <motion.div
-            className="flex h-full"
-            animate={{ x: translateX }}
-            transition={
-              instant
-                ? { duration: 0 }
-                : { type: "spring", stiffness: 320, damping: 32 }
-            }
-          >
-            {loopItems.map((item, i) => {
-              const isActive = i === index;
+        {/* Fixed title — does not scroll with cards */}
+        <h3 className="px-5 pt-5 text-lg font-bold text-text-primary sm:px-6 sm:pt-6 sm:text-xl">
+          Our Expertise
+        </h3>
 
-              return (
-                <div
-                  key={`${item.id}-${i}`}
-                  className={cn(
-                    "h-full shrink-0 overflow-hidden rounded-2xl transition-colors duration-300",
-                    isActive
-                      ? "bg-[#5b21b6] text-white shadow-lg"
-                      : "bg-surface-card text-text-primary",
-                  )}
-                  style={{ width: slideWidth }}
-                >
-                  <ExpertiseCardContent item={item} isActive={isActive} />
-                </div>
-              );
-            })}
-          </motion.div>
-        )}
+        {/* Full-width carousel track */}
+        <div
+          ref={viewportRef}
+          className="relative mt-4 min-h-[240px] w-full flex-1 overflow-hidden pb-5 sm:pb-6"
+        >
+          {slideWidth > 0 && (
+            <motion.div
+              className="flex h-full will-change-transform"
+              animate={{ x: translateX }}
+              transition={
+                instant
+                  ? { duration: 0 }
+                  : { type: "spring", stiffness: 320, damping: 32 }
+              }
+            >
+              {loopItems.map((item, i) => {
+                const isActive = i === index;
 
-        {/* Left peek — click previous */}
-        {count > 1 && (
-          <button
-            type="button"
-            onClick={goPrev}
-            className="absolute left-0 top-0 z-20 h-full cursor-pointer"
-            style={{ width: PEEK_PX }}
-            aria-label="Previous expertise"
-          />
-        )}
+                return (
+                  <div
+                    key={`${item.id}-${i}`}
+                    className={cn(
+                      "h-full shrink-0 overflow-hidden rounded-2xl transition-colors duration-300",
+                      isActive
+                        ? "bg-accent text-white shadow-lg"
+                        : "bg-surface-card text-text-primary",
+                    )}
+                    style={{ width: slideWidth }}
+                  >
+                    <ExpertiseCardContent item={item} isActive={isActive} />
+                  </div>
+                );
+              })}
+            </motion.div>
+          )}
 
-        {/* Right peek — click next */}
-        {count > 1 && (
-          <button
-            type="button"
-            onClick={goNext}
-            className="absolute right-0 top-0 z-20 h-full cursor-pointer"
-            style={{ width: PEEK_PX }}
-            aria-label="Next expertise"
-          />
-        )}
-      </div>
-    </BentoCard>
+          {/* Click left peek → previous card */}
+          {count > 1 && (
+            <button
+              type="button"
+              onClick={goPrev}
+              className="absolute left-0 top-0 z-20 h-full cursor-pointer bg-transparent"
+              style={{ width: PEEK_HIT_PX }}
+              aria-label="Previous expertise"
+            />
+          )}
+
+          {/* Click right peek → next card */}
+          {count > 1 && (
+            <button
+              type="button"
+              onClick={goNext}
+              className="absolute right-0 top-0 z-20 h-full cursor-pointer bg-transparent"
+              style={{ width: PEEK_HIT_PX }}
+              aria-label="Next expertise"
+            />
+          )}
+        </div>
+      </BentoCard>
     </div>
   );
 }
