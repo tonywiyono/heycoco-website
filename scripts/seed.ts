@@ -1,4 +1,5 @@
 import { awards } from "../content/awards";
+import { clientLogos } from "../content/clients";
 import { faqItems } from "../content/faq";
 import { newsItems } from "../content/news";
 import { processStats, processSteps } from "../content/process";
@@ -130,6 +131,24 @@ async function seed() {
           key: step.id,
           title: step.title,
           description: step.description,
+          sortOrder: index,
+        },
+      });
+    }
+  }
+
+  for (const [index, logo] of clientLogos.entries()) {
+    const existing = await payload.find({
+      collection: "client-logos",
+      where: { name: { equals: logo.name } },
+      limit: 1,
+    });
+
+    if (existing.totalDocs === 0) {
+      await payload.create({
+        collection: "client-logos",
+        data: {
+          name: logo.name,
           sortOrder: index,
         },
       });

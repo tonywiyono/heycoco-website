@@ -1,7 +1,7 @@
 export const processStats = [
-  { value: "95%", label: "Clients satisfied and repeating" },
-  { value: "125+", label: "projects completed in 20 countries" },
-  { value: "24", label: "award winning and honorable recognition" },
+  { value: "95%", label: "Clients satisfied and\nrepeating" },
+  { value: "125+", label: "projects completed in\n20 countries" },
+  { value: "24", label: "award winning and honorable\nrecognition" },
 ] as const;
 
 export type ProcessStep = {
@@ -15,24 +15,24 @@ export const processSteps: ProcessStep[] = [
     id: "research",
     title: "Research",
     description:
-      "We dive deep into your brand, audience, and goals to uncover insights that drive creative direction.",
+      "Once the wireframe get approved at step 1, we'll build prototype design to visually the idea",
   },
   {
     id: "concept",
     title: "Concept Design",
     description:
-      "Once the wireframe gets approved at step 1, we'll build prototype designs to visually communicate the idea.",
+      "Once the wireframe get approved at step 1, we'll build prototype design to visually the idea",
   },
   {
     id: "implementation",
     title: "Implementation",
     description:
-      "Our team brings the approved concepts to life across all touchpoints — digital, print, and motion.",
+      "Once the wireframe get approved at step 1, we'll build prototype design to visually the idea",
   },
   {
     id: "testing",
     title: "Testing",
     description:
-      "We test, refine, and optimize to ensure your brand delivers a flawless experience before launch.",
+      "Once the wireframe get approved at step 1, we'll build prototype design to visually the idea",
   },
 ];

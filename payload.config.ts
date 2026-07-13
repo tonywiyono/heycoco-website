@@ -7,6 +7,7 @@ import sharp from "sharp";
 
 import { Awards } from "./collections/Awards";
 import { ExpertiseItems } from "./collections/ExpertiseItems";
+import { ClientLogos } from "./collections/ClientLogos";
 import { ContactSubmissions } from "./collections/ContactSubmissions";
 import { FaqItems } from "./collections/FaqItems";
 import { Media } from "./collections/Media";
@@ -42,6 +43,7 @@ export default buildConfig({
     FaqItems,
     Awards,
     ExpertiseItems,
+    ClientLogos,
     ProcessSteps,
     Services,
     ContactSubmissions,

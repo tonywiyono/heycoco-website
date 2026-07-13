@@ -116,6 +116,12 @@ export type ProcessStat = {
   label: string;
 };
 
+export type ClientLogo = {
+  id: string;
+  name: string;
+  logo: string;
+};
+
 export type HeroContent = {
   headlineLine1: string;
   headlineLine2: string;
@@ -149,6 +155,7 @@ export type HomePageData = {
   projects: Project[];
   processSteps: ProcessStep[];
   processStats: ProcessStat[];
+  clientLogos: ClientLogo[];
   testimonials: Testimonial[];
   teamMembers: TeamMember[];
   teamSection: TeamSectionContent;

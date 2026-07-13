@@ -76,6 +76,7 @@ export interface Config {
     'faq-items': FaqItem;
     awards: Award;
     'expertise-items': ExpertiseItem;
+    'client-logos': ClientLogo;
     'process-steps': ProcessStep;
     services: Service;
     'contact-submissions': ContactSubmission;
@@ -95,6 +96,7 @@ export interface Config {
     'faq-items': FaqItemsSelect<false> | FaqItemsSelect<true>;
     awards: AwardsSelect<false> | AwardsSelect<true>;
     'expertise-items': ExpertiseItemsSelect<false> | ExpertiseItemsSelect<true>;
+    'client-logos': ClientLogosSelect<false> | ClientLogosSelect<true>;
     'process-steps': ProcessStepsSelect<false> | ProcessStepsSelect<true>;
     services: ServicesSelect<false> | ServicesSelect<true>;
     'contact-submissions': ContactSubmissionsSelect<false> | ContactSubmissionsSelect<true>;
@@ -371,6 +373,26 @@ export interface ExpertiseItem {
   createdAt: string;
 }
 /**
+ * Logos shown in the Process section marquee.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "client-logos".
+ */
+export interface ClientLogo {
+  id: number;
+  /**
+   * Client or brand name (used for alt text)
+   */
+  name: string;
+  /**
+   * Prefer white or light logos for the accent stats bar.
+   */
+  logo?: (number | null) | Media;
+  sortOrder?: number | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "process-steps".
  */
@@ -472,6 +494,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'expertise-items';
         value: number | ExpertiseItem;
+      } | null)
+    | ({
+        relationTo: 'client-logos';
+        value: number | ClientLogo;
       } | null)
     | ({
         relationTo: 'process-steps';
@@ -683,6 +709,17 @@ export interface ExpertiseItemsSelect<T extends boolean = true> {
   title?: T;
   description?: T;
   image?: T;
+  sortOrder?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "client-logos_select".
+ */
+export interface ClientLogosSelect<T extends boolean = true> {
+  name?: T;
+  logo?: T;
   sortOrder?: T;
   updatedAt?: T;
   createdAt?: T;

@@ -1,4 +1,5 @@
 import { awards as staticAwards } from "@/content/awards";
+import { clientLogos as staticClientLogos } from "@/content/clients";
 import { expertiseItems as staticExpertiseItems } from "@/content/expertise";
 import { faqItems as staticFaq } from "@/content/faq";
 import { newsItems as staticNews } from "@/content/news";
@@ -12,6 +13,7 @@ import { formatNewsDate, mediaUrl, richTextToPlain } from "@/lib/media";
 import { getPayloadClient, isCmsConfigured } from "@/lib/payload";
 import type {
   Award,
+  ClientLogo,
   ExpertiseItem,
   FaqItem,
   HeroContent,
@@ -144,6 +146,7 @@ function staticHomeData(): HomePageData {
     projects: staticProjects.map((p) => ({ ...p })),
     processSteps: staticProcessSteps.map((s) => ({ ...s })),
     processStats: staticProcessStats.map((s) => ({ ...s })),
+    clientLogos: staticClientLogos.map((logo) => ({ ...logo })),
     testimonials: staticTestimonials.map((t) => ({ ...t })),
     teamMembers: staticTeam.map((m) => ({ ...m, social: m.social ? { ...m.social } : undefined })),
     teamSection: {
@@ -183,6 +186,7 @@ export async function getHomePageData(locale: Locale = DEFAULT_LOCALE): Promise<
       expertiseResult,
       projectsResult,
       processStepsResult,
+      clientLogosResult,
       testimonialsResult,
       teamResult,
       newsResult,
@@ -224,6 +228,12 @@ export async function getHomePageData(locale: Locale = DEFAULT_LOCALE): Promise<
         locale,
         sort: "sortOrder",
         limit: 20,
+        pagination: false,
+      }),
+      payload.find({
+        collection: "client-logos",
+        sort: "sortOrder",
+        limit: 50,
         pagination: false,
       }),
       payload.find({
@@ -337,6 +347,17 @@ export async function getHomePageData(locale: Locale = DEFAULT_LOCALE): Promise<
         label: stat.label,
       })) ?? staticProcessStats.map((s) => ({ ...s }));
 
+    const clientLogos: ClientLogo[] = clientLogosResult.docs.map((doc, index) => {
+      const fallback =
+        staticClientLogos.find((logo) => logo.name === doc.name) ?? staticClientLogos[index];
+
+      return {
+        id: String(doc.id ?? index),
+        name: doc.name,
+        logo: mediaUrl(doc.logo, fallback?.logo ?? ""),
+      };
+    });
+
     const testimonials: Testimonial[] = testimonialsResult.docs.map((doc, index) => ({
       id: String(doc.id ?? index),
       quote: doc.quote,
@@ -402,6 +423,7 @@ export async function getHomePageData(locale: Locale = DEFAULT_LOCALE): Promise<
       projects: projects.length ? projects : staticHomeData().projects,
       processSteps: processSteps.length ? processSteps : staticHomeData().processSteps,
       processStats,
+      clientLogos: clientLogos.length ? clientLogos : staticHomeData().clientLogos,
       testimonials: testimonials.length ? testimonials : staticHomeData().testimonials,
       teamMembers: teamMembers.length ? teamMembers : staticHomeData().teamMembers,
       teamSection,

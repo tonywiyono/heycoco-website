@@ -164,3 +164,20 @@ body {
 .animate-spin-slow {
   animation: spin-slow 20s linear infinite;
 }
+
+@keyframes logo-marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.logo-marquee-track {
+  animation: logo-marquee 45s linear infinite;
+}
+
+.logo-marquee-track:hover {
+  animation-play-state: paused;
+}
