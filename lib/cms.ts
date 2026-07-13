@@ -7,7 +7,7 @@ import { services as staticServices } from "@/content/services";
 import { navItems as staticNavItems, site as staticSite } from "@/content/site";
 import { career as staticCareer, teamMembers as staticTeam, teamStats as staticTeamStats } from "@/content/team";
 import { testimonials as staticTestimonials } from "@/content/testimonials";
-import { formatNewsDate, mediaUrl } from "@/lib/media";
+import { formatNewsDate, mediaUrl, richTextToPlain } from "@/lib/media";
 import { getPayloadClient, isCmsConfigured } from "@/lib/payload";
 import type {
   Award,
@@ -77,6 +77,7 @@ function mapProjectFromDoc(
     title: string;
     category: string;
     tags?: Array<{ tag?: string | null }> | null;
+    scope?: Array<{ platform?: string | null }> | null;
     date: string;
     featured?: boolean | null;
     image?: unknown;
@@ -98,16 +99,24 @@ function mapProjectFromDoc(
     ? mediaUrl(doc.video as Parameters<typeof mediaUrl>[0], staticFallback?.video ?? "")
     : staticFallback?.video;
 
+  const cmsScope = (doc.scope ?? [])
+    .map((s) => s.platform)
+    .filter(Boolean) as string[];
+
+  const bodyText = doc.body ? richTextToPlain(doc.body) : "";
+
   return {
     slug: doc.slug,
     title: doc.title,
     category: doc.category,
     tags: (doc.tags ?? []).map((t) => t.tag).filter(Boolean) as string[],
+    scope: cmsScope.length ? cmsScope : staticFallback?.scope ?? [],
     date: doc.date,
     featured: doc.featured ?? false,
     image,
     video: video || undefined,
     description: doc.description,
+    details: bodyText || staticFallback?.details,
     body: doc.body ? JSON.stringify(doc.body) : undefined,
   };
 }

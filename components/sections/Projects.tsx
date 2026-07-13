@@ -6,13 +6,29 @@ import { Button } from "@/components/ui/Button";
 import { SectionHead } from "@/components/ui/SectionHead";
 import { SectionPanel } from "@/components/ui/SectionPanel";
 import type { Project } from "@/lib/types/content";
+import { cn } from "@/lib/cn";
 import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { createPortal } from "react-dom";
 import { useEffect, useRef, useState } from "react";
 
-/* ── Project modal ─────────────────────────────────────────────────────── */
+function ProjectScope({ items }: { items: string[] }) {
+  if (!items.length) return null;
+
+  return (
+    <div className="flex flex-wrap gap-1.5">
+      {items.map((item) => (
+        <span
+          key={item}
+          className="rounded-md bg-accent/10 px-2 py-1 text-[10px] font-medium uppercase tracking-wide text-accent"
+        >
+          {item}
+        </span>
+      ))}
+    </div>
+  );
+}
 
 function ProjectModal({
   project,
@@ -35,8 +51,8 @@ function ProjectModal({
 
   if (!mounted) return null;
 
-  // Portal renders directly at document.body — stays outside any
-  // Lenis-transformed container so position: fixed works correctly.
+  const fullDetails = project.details ?? project.description;
+
   return createPortal(
     <motion.div
       role="dialog"
@@ -49,19 +65,16 @@ function ProjectModal({
       transition={{ duration: 0.2 }}
       onClick={onClose}
     >
-      {/* Backdrop */}
       <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" aria-hidden />
 
-      {/* Modal card */}
       <motion.div
-        className="relative z-10 w-full max-w-lg overflow-hidden rounded-3xl bg-surface-card-light shadow-2xl"
+        className="relative z-10 max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-3xl bg-surface-card-light shadow-2xl"
         initial={{ opacity: 0, y: 48, scale: 0.96 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
         exit={{ opacity: 0, y: 24, scale: 0.97 }}
         transition={{ type: "spring", stiffness: 320, damping: 28, delay: 0.05 }}
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Media */}
         <div className="relative aspect-video w-full overflow-hidden bg-black/10">
           {project.video ? (
             <video
@@ -81,9 +94,15 @@ function ProjectModal({
               className="object-cover"
             />
           )}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+          <span className="absolute left-5 top-5 rounded-md bg-black/40 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-widest text-white backdrop-blur-sm">
+            {project.category}
+          </span>
+          <h2 className="absolute bottom-5 left-5 right-5 text-2xl font-bold text-white sm:text-3xl">
+            {project.title}
+          </h2>
         </div>
 
-        {/* Close button */}
         <button
           type="button"
           onClick={onClose}
@@ -96,38 +115,59 @@ function ProjectModal({
           </svg>
         </button>
 
-        {/* Info */}
-        <div className="p-6 sm:p-8">
-          <div className="flex flex-wrap gap-2">
-            {project.tags.map((tag) => (
-              <span
-                key={tag}
-                className="rounded-full bg-accent/10 px-3 py-1 text-xs font-medium text-accent"
-              >
-                {tag}
-              </span>
-            ))}
+        <div className="space-y-6 p-6 sm:p-8">
+          <p className="text-sm text-black/50">{project.date}</p>
+
+          <div>
+            <h3 className="text-xs font-semibold uppercase tracking-widest text-black/40">
+              Summary
+            </h3>
+            <p className="mt-2 text-sm leading-relaxed text-black/80">{project.description}</p>
           </div>
 
-          <h2 className="mt-3 text-xl font-bold text-text-dark sm:text-2xl">
-            {project.title}
-          </h2>
-          <p className="mt-1 text-sm text-black/50">
-            {project.category} · {project.date}
-          </p>
-          <p className="mt-4 text-sm leading-relaxed text-black/70">
-            {project.description}
-          </p>
-
-          <div className="mt-6">
-            <Link
-              href={`/projects/${project.slug}`}
-              className="inline-flex items-center gap-1.5 text-sm font-semibold text-accent hover:underline"
-              onClick={onClose}
-            >
-              View Full Case Study →
-            </Link>
+          <div>
+            <h3 className="text-xs font-semibold uppercase tracking-widest text-black/40">
+              Full details
+            </h3>
+            <p className="mt-2 text-sm leading-relaxed text-black/70">{fullDetails}</p>
           </div>
+
+          {project.scope.length > 0 && (
+            <div>
+              <h3 className="text-xs font-semibold uppercase tracking-widest text-black/40">
+                Project scope
+              </h3>
+              <div className="mt-3">
+                <ProjectScope items={project.scope} />
+              </div>
+            </div>
+          )}
+
+          {project.tags.length > 0 && (
+            <div>
+              <h3 className="text-xs font-semibold uppercase tracking-widest text-black/40">
+                Services
+              </h3>
+              <div className="mt-3 flex flex-wrap gap-2">
+                {project.tags.map((tag) => (
+                  <span
+                    key={tag}
+                    className="rounded-full bg-black/5 px-3 py-1 text-xs font-medium text-text-dark"
+                  >
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            </div>
+          )}
+
+          <Link
+            href={`/projects/${project.slug}`}
+            className="inline-flex items-center gap-1.5 text-sm font-semibold text-accent hover:underline"
+            onClick={onClose}
+          >
+            View full case study →
+          </Link>
         </div>
       </motion.div>
     </motion.div>,
@@ -135,19 +175,13 @@ function ProjectModal({
   );
 }
 
-/* ── Project card ──────────────────────────────────────────────────────── */
-
 function ProjectCard({
   project,
   onOpen,
-  className,
-  square = false,
   delay = 0,
 }: {
   project: Project;
   onOpen: (p: Project) => void;
-  className?: string;
-  square?: boolean;
   delay?: number;
 }) {
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -168,26 +202,26 @@ function ProjectCard({
   };
 
   return (
-    <ScrollReveal className={className} delay={delay}>
+    <ScrollReveal delay={delay}>
       <article>
         <button
           type="button"
           onClick={() => onOpen(project)}
-          className="group block w-full text-left"
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
+          className="group flex w-full flex-col overflow-hidden rounded-2xl bg-white text-left shadow-sm transition-shadow hover:shadow-md"
         >
-          <div
-            className={`relative overflow-hidden rounded-2xl bg-black/5 ${square ? "aspect-square" : "aspect-[4/3]"}`}
-            onMouseEnter={handleMouseEnter}
-            onMouseLeave={handleMouseLeave}
-          >
+          {/* Image + header */}
+          <div className="relative aspect-[4/5] w-full overflow-hidden">
             <Image
               src={project.image}
               alt={project.title}
               fill
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-              className={`object-cover transition-all duration-500 group-hover:scale-105 ${
-                project.video && isHovered ? "opacity-0" : "opacity-100"
-              }`}
+              className={cn(
+                "object-cover transition-all duration-500 group-hover:scale-105",
+                project.video && isHovered && "opacity-0",
+              )}
             />
 
             {project.video && (
@@ -198,50 +232,45 @@ function ProjectCard({
                 loop
                 playsInline
                 preload="metadata"
-                className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-500 ${
-                  isHovered ? "opacity-100" : "opacity-0"
-                }`}
+                className={cn(
+                  "absolute inset-0 h-full w-full object-cover transition-opacity duration-500",
+                  isHovered ? "opacity-100" : "opacity-0",
+                )}
               />
             )}
 
-            {/* Tags */}
-            <div className="absolute left-4 top-4 flex flex-wrap gap-2">
-              {project.tags.map((tag) => (
-                <span
-                  key={tag}
-                  className="rounded-full bg-white/90 px-3 py-1 text-xs font-medium text-text-dark"
-                >
-                  {tag}
-                </span>
-              ))}
-            </div>
+            <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-transparent" />
 
-            {/* Video play hint */}
-            {project.video && !isHovered && (
-              <div className="absolute bottom-4 right-4 flex h-8 w-8 items-center justify-center rounded-full bg-black/40 text-white backdrop-blur-sm">
-                <svg width="10" height="12" viewBox="0 0 10 12" fill="currentColor" aria-hidden>
-                  <path d="M0 0l10 6-10 6z" />
-                </svg>
-              </div>
-            )}
+            <span className="absolute left-4 top-4 rounded-md bg-black/40 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-widest text-white backdrop-blur-sm">
+              {project.category}
+            </span>
+
+            <h3 className="absolute bottom-4 left-4 right-4 text-xl font-bold leading-tight text-white sm:text-2xl">
+              {project.title}
+            </h3>
           </div>
 
-          <h3 className="mt-4 text-base font-semibold text-text-dark transition-colors group-hover:text-accent">
-            {project.title}
-          </h3>
+          {/* Caption + scope */}
+          <div className="flex flex-1 flex-col gap-4 p-5">
+            <p className="text-sm leading-relaxed text-black/75">{project.description}</p>
+
+            <ProjectScope items={project.scope} />
+
+            <span className="mt-auto inline-flex items-center gap-1 text-sm font-medium text-text-dark transition-colors group-hover:text-accent">
+              Read case
+              <span aria-hidden>→</span>
+            </span>
+          </div>
         </button>
       </article>
     </ScrollReveal>
   );
 }
 
-/* ── Projects section ──────────────────────────────────────────────────── */
-
 export function Projects({ projects }: { projects: Project[] }) {
   const [selected, setSelected] = useState<Project | null>(null);
-  const [p1, p2, p3, p4, p5, p6] = projects;
 
-  if (!p1) return null;
+  if (!projects.length) return null;
 
   return (
     <>
@@ -254,43 +283,15 @@ export function Projects({ projects }: { projects: Project[] }) {
             />
           </ScrollReveal>
 
-          <div className="space-y-10 lg:space-y-14">
-            <div className="lg:w-2/3">
-              <ProjectCard project={p1} onOpen={setSelected} delay={0} />
-            </div>
-
-            {p2 && p3 ? (
-              <div className="grid gap-10 lg:grid-cols-12 lg:gap-12">
-                <div className="lg:col-span-3">
-                  <ProjectCard project={p2} onOpen={setSelected} square delay={0.05} />
-                </div>
-                <div className="lg:col-span-6 lg:col-start-7">
-                  <ProjectCard project={p3} onOpen={setSelected} delay={0.1} />
-                </div>
-              </div>
-            ) : null}
-
-            {p4 ? (
-              <div className="grid gap-10 lg:grid-cols-12 lg:gap-12">
-                <div className="lg:col-span-3 lg:col-start-5">
-                  <ProjectCard project={p4} onOpen={setSelected} square delay={0.05} />
-                </div>
-              </div>
-            ) : null}
-
-            {p5 ? (
-              <div className="lg:w-2/3 lg:ml-auto">
-                <ProjectCard project={p5} onOpen={setSelected} delay={0.08} />
-              </div>
-            ) : null}
-
-            {p6 ? (
-              <div className="grid gap-10 lg:grid-cols-12 lg:gap-12">
-                <div className="lg:col-span-6">
-                  <ProjectCard project={p6} onOpen={setSelected} delay={0.1} />
-                </div>
-              </div>
-            ) : null}
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {projects.map((project, index) => (
+              <ProjectCard
+                key={project.slug}
+                project={project}
+                onOpen={setSelected}
+                delay={index * 0.05}
+              />
+            ))}
           </div>
 
           <ScrollReveal className="mt-12 text-center" delay={0.1}>

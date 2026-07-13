@@ -37,11 +37,13 @@ export type Project = {
   title: string;
   category: string;
   tags: string[];
+  scope: string[];
   date: string;
   featured?: boolean;
   image: string;
   video?: string;
   description: string;
+  details?: string;
   body?: string;
 };
 

@@ -39,6 +39,13 @@ export const Projects: CollectionConfig = {
       name: "tags",
       type: "array",
       fields: [{ name: "tag", type: "text", required: true }],
+      admin: { description: "Service areas (e.g. Performance Marketing, Content Creation)." },
+    },
+    {
+      name: "scope",
+      type: "array",
+      fields: [{ name: "platform", type: "text", required: true }],
+      admin: { description: "Platforms and tools (e.g. Instagram, TikTok, Google Ads, Kommo)." },
     },
     {
       name: "date",

@@ -59,6 +59,21 @@ export default async function ProjectDetailPage({ params }: Props) {
           ))}
         </div>
         <p className="text-lg leading-relaxed text-text-dark/80">{project.description}</p>
+        {project.details && project.details !== project.description && (
+          <p className="text-base leading-relaxed text-text-dark/70">{project.details}</p>
+        )}
+        {project.scope?.length > 0 && (
+          <div className="flex flex-wrap gap-2 pt-2">
+            {project.scope.map((platform) => (
+              <span
+                key={platform}
+                className="rounded-md bg-accent/10 px-2.5 py-1 text-xs font-medium text-accent"
+              >
+                {platform}
+              </span>
+            ))}
+          </div>
+        )}
       </div>
 
       <BentoCard variant="light" className="p-8">
