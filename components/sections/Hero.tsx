@@ -4,8 +4,7 @@ import { Section } from "@/components/layout/Section";
 import { HeroExpertise } from "@/components/sections/HeroExpertise";
 import { BentoCard } from "@/components/ui/BentoCard";
 import { Tag } from "@/components/ui/Tag";
-import type { ExpertiseItem } from "@/content/expertise";
-import type { HeroContent, ServiceTag } from "@/lib/types/content";
+import type { ExpertiseItem, HeroContent, ServiceTag } from "@/lib/types/content";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { useState } from "react";
@@ -138,7 +137,10 @@ export function Hero({ hero, services, expertise }: HeroProps) {
             <ScrambledServices services={services} />
           </BentoCard>
 
-          <HeroExpertise items={expertise} />
+          <HeroExpertise
+            items={expertise}
+            sectionTitle={hero.expertiseSectionTitle}
+          />
         </div>
       </div>
     </Section>

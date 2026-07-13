@@ -1,9 +1,4 @@
-export type ExpertiseItem = {
-  id: string;
-  title: string;
-  description: string;
-  image: string;
-};
+import type { ExpertiseItem } from "@/lib/types/content";
 
 export const expertiseItems: ExpertiseItem[] = [
   {

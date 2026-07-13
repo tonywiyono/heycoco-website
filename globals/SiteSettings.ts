@@ -54,6 +54,13 @@ export const SiteSettings: GlobalConfig = {
             { name: "introText", type: "textarea", required: true, localized: true },
             { name: "rating", type: "text", defaultValue: "4.9/5" },
             { name: "ratingLabel", type: "text", localized: true },
+            {
+              name: "expertiseSectionTitle",
+              type: "text",
+              defaultValue: "Our Expertise",
+              localized: true,
+              admin: { description: "Heading above the hero expertise card" },
+            },
           ],
         },
         {

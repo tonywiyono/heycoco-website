@@ -90,6 +90,13 @@ export type Award = {
   icon: string;
 };
 
+export type ExpertiseItem = {
+  id: string;
+  title: string;
+  description: string;
+  image: string;
+};
+
 export type ServiceTag = {
   id: string;
   label: string;
@@ -115,6 +122,7 @@ export type HeroContent = {
   introText: string;
   rating: string;
   ratingLabel: string;
+  expertiseSectionTitle: string;
 };
 
 export type TeamSectionContent = {
@@ -136,6 +144,7 @@ export type HomePageData = {
   hero: HeroContent;
   services: ServiceTag[];
   awards: Award[];
+  expertiseItems: ExpertiseItem[];
   projects: Project[];
   processSteps: ProcessStep[];
   processStats: ProcessStat[];

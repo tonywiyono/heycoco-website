@@ -1,4 +1,5 @@
 import { awards as staticAwards } from "@/content/awards";
+import { expertiseItems as staticExpertiseItems } from "@/content/expertise";
 import { faqItems as staticFaq } from "@/content/faq";
 import { newsItems as staticNews } from "@/content/news";
 import { processStats as staticProcessStats, processSteps as staticProcessSteps } from "@/content/process";
@@ -11,6 +12,7 @@ import { formatNewsDate, mediaUrl, richTextToPlain } from "@/lib/media";
 import { getPayloadClient, isCmsConfigured } from "@/lib/payload";
 import type {
   Award,
+  ExpertiseItem,
   FaqItem,
   HeroContent,
   HomePageData,
@@ -134,9 +136,11 @@ function staticHomeData(): HomePageData {
         "Based in Jakarta & Bali. We're an agency focused on social media, content creation, and video production.",
       rating: "4.9/5",
       ratingLabel: "Based on 24 reviews on Clutch",
+      expertiseSectionTitle: "Our Expertise",
     },
     services: staticServices.map((s) => ({ ...s })),
     awards: staticAwards.map((a) => ({ ...a })),
+    expertiseItems: staticExpertiseItems.map((item) => ({ ...item })),
     projects: staticProjects.map((p) => ({ ...p })),
     processSteps: staticProcessSteps.map((s) => ({ ...s })),
     processStats: staticProcessStats.map((s) => ({ ...s })),
@@ -176,6 +180,7 @@ export async function getHomePageData(locale: Locale = DEFAULT_LOCALE): Promise<
       settings,
       servicesResult,
       awardsResult,
+      expertiseResult,
       projectsResult,
       processStepsResult,
       testimonialsResult,
@@ -193,6 +198,13 @@ export async function getHomePageData(locale: Locale = DEFAULT_LOCALE): Promise<
       }),
       payload.find({
         collection: "awards",
+        locale,
+        sort: "sortOrder",
+        limit: 20,
+        pagination: false,
+      }),
+      payload.find({
+        collection: "expertise-items",
         locale,
         sort: "sortOrder",
         limit: 20,
@@ -281,6 +293,7 @@ export async function getHomePageData(locale: Locale = DEFAULT_LOCALE): Promise<
       introText: settings.introText ?? staticHomeData().hero.introText,
       rating: settings.rating ?? "4.9/5",
       ratingLabel: settings.ratingLabel ?? "Based on 24 reviews on Clutch",
+      expertiseSectionTitle: settings.expertiseSectionTitle ?? "Our Expertise",
     };
 
     const services: ServiceTag[] = servicesResult.docs.map((doc) => ({
@@ -295,6 +308,19 @@ export async function getHomePageData(locale: Locale = DEFAULT_LOCALE): Promise<
       title: doc.title,
       icon: doc.icon,
     }));
+
+    const expertiseItems: ExpertiseItem[] = expertiseResult.docs.map((doc, index) => {
+      const fallback =
+        staticExpertiseItems.find((item) => item.id === doc.key) ??
+        staticExpertiseItems[index];
+
+      return {
+        id: doc.key,
+        title: doc.title,
+        description: doc.description,
+        image: mediaUrl(doc.image, fallback?.image ?? ""),
+      };
+    });
 
     const projects: Project[] = projectsResult.docs.map((doc, index) =>
       mapProjectFromDoc(doc, index),
@@ -373,6 +399,9 @@ export async function getHomePageData(locale: Locale = DEFAULT_LOCALE): Promise<
       hero,
       services: services.length ? services : staticHomeData().services,
       awards: awards.length ? awards : staticHomeData().awards,
+      expertiseItems: expertiseItems.length
+        ? expertiseItems
+        : staticHomeData().expertiseItems,
       projects: projects.length ? projects : staticHomeData().projects,
       processSteps: processSteps.length ? processSteps : staticHomeData().processSteps,
       processStats,

@@ -75,6 +75,7 @@ export interface Config {
     'news-posts': NewsPost;
     'faq-items': FaqItem;
     awards: Award;
+    'expertise-items': ExpertiseItem;
     'process-steps': ProcessStep;
     services: Service;
     'contact-submissions': ContactSubmission;
@@ -93,6 +94,7 @@ export interface Config {
     'news-posts': NewsPostsSelect<false> | NewsPostsSelect<true>;
     'faq-items': FaqItemsSelect<false> | FaqItemsSelect<true>;
     awards: AwardsSelect<false> | AwardsSelect<true>;
+    'expertise-items': ExpertiseItemsSelect<false> | ExpertiseItemsSelect<true>;
     'process-steps': ProcessStepsSelect<false> | ProcessStepsSelect<true>;
     services: ServicesSelect<false> | ServicesSelect<true>;
     'contact-submissions': ContactSubmissionsSelect<false> | ContactSubmissionsSelect<true>;
@@ -193,15 +195,31 @@ export interface Project {
   title: string;
   slug: string;
   category: string;
+  /**
+   * Service areas (e.g. Performance Marketing, Content Creation).
+   */
   tags?:
     | {
         tag: string;
         id?: string | null;
       }[]
     | null;
+  /**
+   * Platforms and tools (e.g. Instagram, TikTok, Google Ads, Kommo).
+   */
+  scope?:
+    | {
+        platform: string;
+        id?: string | null;
+      }[]
+    | null;
   date: string;
   featured?: boolean | null;
   image?: (number | null) | Media;
+  /**
+   * Optional preview video (MP4). Plays on hover in the portfolio grid.
+   */
+  video?: (number | null) | Media;
   description: string;
   body?: {
     root: {
@@ -321,6 +339,26 @@ export interface Award {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "expertise-items".
+ */
+export interface ExpertiseItem {
+  id: number;
+  /**
+   * Stable identifier (e.g. branding, social-media)
+   */
+  key: string;
+  title: string;
+  description: string;
+  /**
+   * Featured image shown in the hero expertise card
+   */
+  image?: (number | null) | Media;
+  sortOrder?: number | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "process-steps".
  */
 export interface ProcessStep {
@@ -417,6 +455,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'awards';
         value: number | Award;
+      } | null)
+    | ({
+        relationTo: 'expertise-items';
+        value: number | ExpertiseItem;
       } | null)
     | ({
         relationTo: 'process-steps';
@@ -527,9 +569,16 @@ export interface ProjectsSelect<T extends boolean = true> {
         tag?: T;
         id?: T;
       };
+  scope?:
+    | T
+    | {
+        platform?: T;
+        id?: T;
+      };
   date?: T;
   featured?: T;
   image?: T;
+  video?: T;
   description?: T;
   body?: T;
   sortOrder?: T;
@@ -606,6 +655,19 @@ export interface FaqItemsSelect<T extends boolean = true> {
 export interface AwardsSelect<T extends boolean = true> {
   title?: T;
   icon?: T;
+  sortOrder?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "expertise-items_select".
+ */
+export interface ExpertiseItemsSelect<T extends boolean = true> {
+  key?: T;
+  title?: T;
+  description?: T;
+  image?: T;
   sortOrder?: T;
   updatedAt?: T;
   createdAt?: T;
@@ -724,6 +786,10 @@ export interface SiteSetting {
   introText: string;
   rating?: string | null;
   ratingLabel?: string | null;
+  /**
+   * Heading above the hero expertise card
+   */
+  expertiseSectionTitle?: string | null;
   teamHeadline: string;
   teamSubhead: string;
   teamStat: string;
@@ -798,6 +864,7 @@ export interface SiteSettingsSelect<T extends boolean = true> {
   introText?: T;
   rating?: T;
   ratingLabel?: T;
+  expertiseSectionTitle?: T;
   teamHeadline?: T;
   teamSubhead?: T;
   teamStat?: T;

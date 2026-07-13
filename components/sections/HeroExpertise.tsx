@@ -1,191 +1,56 @@
 "use client";
 
 import { BentoCard } from "@/components/ui/BentoCard";
-import type { ExpertiseItem } from "@/content/expertise";
-import { cn } from "@/lib/cn";
+import type { ExpertiseItem } from "@/lib/types/content";
 import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
-const PEEK_PX = 10;
-const HOVER_ZONE_RATIO = 0.32;
 const AUTO_INTERVAL_MS = 5000;
 
 type HeroExpertiseProps = {
   items: ExpertiseItem[];
+  sectionTitle?: string;
 };
 
-type HoverSide = "left" | "right" | null;
-
-function ExpertiseCardContent({
-  item,
-  isActive,
-  preview = false,
+function NavButton({
+  direction,
+  onClick,
+  label,
 }: {
-  item: ExpertiseItem;
-  isActive: boolean;
-  preview?: boolean;
+  direction: "prev" | "next";
+  onClick: () => void;
+  label: string;
 }) {
   return (
-    <div className="flex h-full min-h-[220px] w-full flex-col p-4 sm:p-5">
-      <h4
-        className={cn(
-          "text-sm font-semibold leading-snug sm:text-base",
-          isActive ? "text-white" : "text-accent",
-        )}
-      >
-        {item.title}
-      </h4>
-
-      {isActive ? (
-        <>
-          <p className="mt-3 text-xs leading-relaxed text-white/90 sm:text-sm">
-            {item.description}
-          </p>
-          <div className="relative mt-4 aspect-[4/3] w-full overflow-hidden rounded-xl">
-            <Image
-              src={item.image}
-              alt=""
-              fill
-              sizes="(max-width: 1024px) 100vw, 320px"
-              className="object-cover"
-            />
-          </div>
-        </>
-      ) : preview ? (
-        <>
-          <p className="mt-2 line-clamp-2 text-xs leading-relaxed text-text-muted">
-            {item.description}
-          </p>
-          <div className="relative mt-3 aspect-[16/10] w-full overflow-hidden rounded-lg">
-            <Image
-              src={item.image}
-              alt=""
-              fill
-              sizes="200px"
-              className="object-cover"
-            />
-          </div>
-        </>
-      ) : null}
-    </div>
-  );
-}
-
-function PreviewCard({
-  item,
-  side,
-}: {
-  item: ExpertiseItem;
-  side: "left" | "right";
-}) {
-  const swing = side === "left" ? [-5, -2, -5] : [5, 2, 5];
-  const enterX = side === "left" ? -48 : 48;
-
-  return (
-    <motion.div
-      key={`preview-${side}-${item.id}`}
-      className={cn(
-        "pointer-events-none absolute top-0 z-30 h-full w-[46%] overflow-hidden rounded-2xl border border-border-subtle bg-surface-card shadow-2xl",
-        side === "left" ? "left-0 origin-left" : "right-0 origin-right",
-      )}
-      initial={{ opacity: 0, x: enterX, rotate: 0 }}
-      animate={{
-        opacity: 1,
-        x: side === "left" ? "6%" : "-6%",
-        rotate: swing,
-      }}
-      exit={{ opacity: 0, x: enterX, rotate: 0 }}
-      transition={{
-        opacity: { duration: 0.2 },
-        x: { type: "spring", stiffness: 280, damping: 22 },
-        rotate: { repeat: Infinity, duration: 2.4, ease: "easeInOut" },
-      }}
+    <button
+      type="button"
+      onClick={onClick}
+      className="flex h-9 w-9 items-center justify-center rounded-full border border-white/30 bg-white/10 text-sm transition-colors hover:bg-white/20"
+      aria-label={label}
     >
-      <ExpertiseCardContent item={item} isActive={false} preview />
-    </motion.div>
+      {direction === "prev" ? "←" : "→"}
+    </button>
   );
 }
 
-export function HeroExpertise({ items }: HeroExpertiseProps) {
-  const viewportRef = useRef<HTMLDivElement>(null);
-  const [viewportWidth, setViewportWidth] = useState(0);
-  const [index, setIndex] = useState(1);
-  const [instant, setInstant] = useState(false);
+export function HeroExpertise({
+  items,
+  sectionTitle = "Our Expertise",
+}: HeroExpertiseProps) {
+  const [index, setIndex] = useState(0);
   const [paused, setPaused] = useState(false);
-  const [hoverSide, setHoverSide] = useState<HoverSide>(null);
-
   const count = items.length;
-
-  const loopItems = useMemo(() => {
-    if (count === 0) return [];
-    if (count === 1) return items;
-    return [items[count - 1], ...items, items[0]];
-  }, [items, count]);
-
-  const slideWidth = viewportWidth > 0 ? viewportWidth - PEEK_PX * 2 : 0;
-
-  const prevItem = loopItems[index - 1];
-  const nextItem = loopItems[index + 1];
-
-  useEffect(() => {
-    const el = viewportRef.current;
-    if (!el) return;
-
-    const update = () => setViewportWidth(el.offsetWidth);
-    update();
-
-    const observer = new ResizeObserver(update);
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, []);
-
-  const updateHoverSide = useCallback((clientX: number) => {
-    const rect = viewportRef.current?.getBoundingClientRect();
-    if (!rect || count <= 1) {
-      setHoverSide(null);
-      return;
-    }
-
-    const ratio = (clientX - rect.left) / rect.width;
-    if (ratio < HOVER_ZONE_RATIO) setHoverSide("left");
-    else if (ratio > 1 - HOVER_ZONE_RATIO) setHoverSide("right");
-    else setHoverSide(null);
-  }, [count]);
 
   const goNext = useCallback(() => {
     if (count <= 1) return;
-    setInstant(false);
-    setHoverSide(null);
-    setIndex((i) => i + 1);
+    setIndex((i) => (i + 1) % count);
   }, [count]);
 
   const goPrev = useCallback(() => {
     if (count <= 1) return;
-    setInstant(false);
-    setHoverSide(null);
-    setIndex((i) => i - 1);
+    setIndex((i) => (i === 0 ? count - 1 : i - 1));
   }, [count]);
-
-  useEffect(() => {
-    if (count <= 1) return;
-
-    if (index === 0) {
-      const timer = window.setTimeout(() => {
-        setInstant(true);
-        setIndex(count);
-      }, 420);
-      return () => window.clearTimeout(timer);
-    }
-
-    if (index === count + 1) {
-      const timer = window.setTimeout(() => {
-        setInstant(true);
-        setIndex(1);
-      }, 420);
-      return () => window.clearTimeout(timer);
-    }
-  }, [index, count]);
 
   useEffect(() => {
     if (count <= 1 || paused) return;
@@ -195,87 +60,51 @@ export function HeroExpertise({ items }: HeroExpertiseProps) {
 
   if (!count) return null;
 
-  const translateX = slideWidth > 0 ? -index * slideWidth + PEEK_PX : 0;
+  const item = items[index];
 
   return (
     <div onMouseEnter={() => setPaused(true)} onMouseLeave={() => setPaused(false)}>
       <BentoCard
         variant="dark"
         hover={false}
-        className="relative flex min-h-[300px] flex-1 flex-col overflow-hidden p-0 sm:min-h-[340px]"
+        className="flex min-h-[300px] flex-1 flex-col p-5 sm:min-h-[340px] sm:p-6"
       >
-        <h3 className="px-5 pt-5 text-lg font-bold text-text-primary sm:px-6 sm:pt-6 sm:text-xl">
-          Our Expertise
-        </h3>
+        <h3 className="text-lg font-bold text-text-primary sm:text-xl">{sectionTitle}</h3>
 
-        <div
-          ref={viewportRef}
-          className="relative mt-4 min-h-[240px] w-full flex-1 overflow-hidden pb-5 sm:pb-6"
-          onMouseMove={(e) => updateHoverSide(e.clientX)}
-          onMouseLeave={() => setHoverSide(null)}
-        >
-          {slideWidth > 0 && (
+        <div className="mt-4 flex min-h-0 flex-1 flex-col rounded-2xl bg-accent p-5 sm:p-6">
+          <AnimatePresence mode="wait">
             <motion.div
-              className="flex h-full will-change-transform"
-              animate={{ x: translateX }}
-              transition={
-                instant
-                  ? { duration: 0 }
-                  : { type: "spring", stiffness: 320, damping: 32 }
-              }
+              key={item.id}
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -8 }}
+              transition={{ duration: 0.25 }}
+              className="flex min-h-0 flex-1 flex-col"
             >
-              {loopItems.map((item, i) => {
-                const isActive = i === index;
-
-                return (
-                  <div
-                    key={`${item.id}-${i}`}
-                    className={cn(
-                      "h-full shrink-0 overflow-hidden rounded-2xl transition-colors duration-300",
-                      isActive
-                        ? "bg-accent text-white shadow-lg"
-                        : "bg-surface-card text-text-primary",
-                    )}
-                    style={{ width: slideWidth }}
-                  >
-                    <ExpertiseCardContent item={item} isActive={isActive} />
-                  </div>
-                );
-              })}
+              <h4 className="text-sm font-semibold leading-snug text-white sm:text-base">
+                {item.title}
+              </h4>
+              <p className="mt-3 text-xs leading-relaxed text-white/90 sm:text-sm">
+                {item.description}
+              </p>
+              <div className="relative mt-4 aspect-[4/3] w-full overflow-hidden rounded-xl">
+                <Image
+                  src={item.image}
+                  alt=""
+                  fill
+                  sizes="(max-width: 1024px) 100vw, 320px"
+                  className="object-cover"
+                />
+              </div>
             </motion.div>
-          )}
-
-          {/* Swinging preview overlays */}
-          <AnimatePresence>
-            {hoverSide === "left" && prevItem && (
-              <PreviewCard item={prevItem} side="left" />
-            )}
-            {hoverSide === "right" && nextItem && (
-              <PreviewCard item={nextItem} side="right" />
-            )}
           </AnimatePresence>
 
-          {count > 1 && (
-            <button
-              type="button"
-              onClick={goPrev}
-              onMouseEnter={() => setHoverSide("left")}
-              className="absolute left-0 top-0 z-40 h-full cursor-pointer bg-transparent"
-              style={{ width: `${HOVER_ZONE_RATIO * 100}%` }}
-              aria-label="Previous expertise"
-            />
-          )}
-
-          {count > 1 && (
-            <button
-              type="button"
-              onClick={goNext}
-              onMouseEnter={() => setHoverSide("right")}
-              className="absolute right-0 top-0 z-40 h-full cursor-pointer bg-transparent"
-              style={{ width: `${HOVER_ZONE_RATIO * 100}%` }}
-              aria-label="Next expertise"
-            />
-          )}
+          {count > 1 ? (
+            <div className="mt-4 flex justify-end gap-2">
+              <NavButton direction="prev" onClick={goPrev} label="Previous expertise" />
+              <NavButton direction="next" onClick={goNext} label="Next expertise" />
+            </div>
+          ) : null}
         </div>
       </BentoCard>
     </div>
