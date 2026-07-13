@@ -309,18 +309,12 @@ export async function getHomePageData(locale: Locale = DEFAULT_LOCALE): Promise<
       icon: doc.icon,
     }));
 
-    const expertiseItems: ExpertiseItem[] = expertiseResult.docs.map((doc, index) => {
-      const fallback =
-        staticExpertiseItems.find((item) => item.id === doc.key) ??
-        staticExpertiseItems[index];
-
-      return {
-        id: doc.key,
-        title: doc.title,
-        description: doc.description,
-        image: mediaUrl(doc.image, fallback?.image ?? ""),
-      };
-    });
+    const expertiseItems: ExpertiseItem[] = expertiseResult.docs.map((doc) => ({
+      id: doc.key,
+      title: doc.title,
+      description: doc.description,
+      image: mediaUrl(doc.image, ""),
+    }));
 
     const projects: Project[] = projectsResult.docs.map((doc, index) =>
       mapProjectFromDoc(doc, index),
@@ -399,9 +393,7 @@ export async function getHomePageData(locale: Locale = DEFAULT_LOCALE): Promise<
       hero,
       services: services.length ? services : staticHomeData().services,
       awards: awards.length ? awards : staticHomeData().awards,
-      expertiseItems: expertiseItems.length
-        ? expertiseItems
-        : staticHomeData().expertiseItems,
+      expertiseItems,
       projects: projects.length ? projects : staticHomeData().projects,
       processSteps: processSteps.length ? processSteps : staticHomeData().processSteps,
       processStats,

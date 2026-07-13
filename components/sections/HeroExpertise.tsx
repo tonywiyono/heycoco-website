@@ -63,31 +63,37 @@ export function HeroExpertise({
   const item = items[index];
 
   return (
-    <div onMouseEnter={() => setPaused(true)} onMouseLeave={() => setPaused(false)}>
-      <BentoCard
-        variant="dark"
-        hover={false}
-        className="flex min-h-[300px] flex-1 flex-col p-5 sm:min-h-[340px] sm:p-6"
-      >
-        <h3 className="text-lg font-bold text-text-primary sm:text-xl">{sectionTitle}</h3>
+    <div
+      className="flex min-h-0 flex-1 flex-col"
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
+    >
+      <h3 className="mb-3 text-base font-bold text-text-primary sm:mb-4 sm:text-lg">
+        {sectionTitle}
+      </h3>
 
-        <div className="mt-4 flex min-h-0 flex-1 flex-col rounded-2xl bg-accent p-5 sm:p-6">
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={item.id}
-              initial={{ opacity: 0, y: 8 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -8 }}
-              transition={{ duration: 0.25 }}
-              className="flex min-h-0 flex-1 flex-col"
-            >
-              <h4 className="text-sm font-semibold leading-snug text-white sm:text-base">
-                {item.title}
-              </h4>
-              <p className="mt-3 text-xs leading-relaxed text-white/90 sm:text-sm">
-                {item.description}
-              </p>
-              <div className="relative mt-4 aspect-[4/3] w-full overflow-hidden rounded-xl">
+      <BentoCard
+        variant="accent"
+        hover={false}
+        className="relative flex min-h-[260px] flex-1 flex-col overflow-hidden p-5 sm:min-h-[300px] sm:p-6"
+      >
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={item.id}
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -8 }}
+            transition={{ duration: 0.25 }}
+            className="flex min-h-0 flex-1 flex-col"
+          >
+            <h4 className="text-base font-bold leading-snug text-white sm:text-lg">
+              {item.title}
+            </h4>
+            <p className="mt-2 text-xs leading-relaxed text-white/90 sm:mt-3 sm:text-sm">
+              {item.description}
+            </p>
+            {item.image ? (
+              <div className="relative mt-4 min-h-[120px] flex-1 overflow-hidden rounded-2xl sm:mt-5">
                 <Image
                   src={item.image}
                   alt=""
@@ -96,16 +102,16 @@ export function HeroExpertise({
                   className="object-cover"
                 />
               </div>
-            </motion.div>
-          </AnimatePresence>
+            ) : null}
+          </motion.div>
+        </AnimatePresence>
 
-          {count > 1 ? (
-            <div className="mt-4 flex justify-end gap-2">
-              <NavButton direction="prev" onClick={goPrev} label="Previous expertise" />
-              <NavButton direction="next" onClick={goNext} label="Next expertise" />
-            </div>
-          ) : null}
-        </div>
+        {count > 1 ? (
+          <div className="absolute bottom-5 right-5 flex gap-2 sm:bottom-6 sm:right-6">
+            <NavButton direction="prev" onClick={goPrev} label="Previous expertise" />
+            <NavButton direction="next" onClick={goNext} label="Next expertise" />
+          </div>
+        ) : null}
       </BentoCard>
     </div>
   );

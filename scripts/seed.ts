@@ -1,5 +1,4 @@
 import { awards } from "../content/awards";
-import { expertiseItems } from "../content/expertise";
 import { faqItems } from "../content/faq";
 import { newsItems } from "../content/news";
 import { processStats, processSteps } from "../content/process";
@@ -110,26 +109,6 @@ async function seed() {
         data: {
           title: award.title,
           icon: award.icon,
-          sortOrder: index,
-        },
-      });
-    }
-  }
-
-  for (const [index, item] of expertiseItems.entries()) {
-    const existing = await payload.find({
-      collection: "expertise-items",
-      where: { key: { equals: item.id } },
-      limit: 1,
-    });
-
-    if (existing.totalDocs === 0) {
-      await payload.create({
-        collection: "expertise-items",
-        data: {
-          key: item.id,
-          title: item.title,
-          description: item.description,
           sortOrder: index,
         },
       });
