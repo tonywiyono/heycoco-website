@@ -1,10 +1,10 @@
 "use client";
 
 import { Section } from "@/components/layout/Section";
-import { HeroExpertise } from "@/components/sections/HeroExpertise";
+import { HeroAccolades } from "@/components/sections/HeroAccolades";
 import { BentoCard } from "@/components/ui/BentoCard";
 import { Tag } from "@/components/ui/Tag";
-import type { ExpertiseItem, HeroContent, ServiceTag } from "@/lib/types/content";
+import type { Award, HeroContent, ServiceTag } from "@/lib/types/content";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { useState } from "react";
@@ -12,7 +12,7 @@ import { useState } from "react";
 type HeroProps = {
   hero: HeroContent;
   services: ServiceTag[];
-  expertise: ExpertiseItem[];
+  awards: Award[];
 };
 
 type ScrambledTag = ServiceTag & { rotation: number };
@@ -63,7 +63,7 @@ function ScrambledServices({ services }: { services: ServiceTag[] }) {
   );
 }
 
-export function Hero({ hero, services, expertise }: HeroProps) {
+export function Hero({ hero, services, awards }: HeroProps) {
   const subheadLines = hero.subheadline.split("\n");
 
   return (
@@ -137,10 +137,7 @@ export function Hero({ hero, services, expertise }: HeroProps) {
             <ScrambledServices services={services} />
           </BentoCard>
 
-          <HeroExpertise
-            items={expertise}
-            sectionTitle={hero.expertiseSectionTitle}
-          />
+          <HeroAccolades items={awards} />
         </div>
       </div>
     </Section>

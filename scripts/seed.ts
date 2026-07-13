@@ -99,7 +99,7 @@ async function seed() {
   for (const [index, award] of awards.entries()) {
     const existing = await payload.find({
       collection: "awards",
-      where: { title: { equals: award.title } },
+      where: { key: { equals: award.id } },
       limit: 1,
     });
 
@@ -107,8 +107,9 @@ async function seed() {
       await payload.create({
         collection: "awards",
         data: {
-          title: award.title,
-          icon: award.icon,
+          key: award.id,
+          headline: award.headline,
+          caption: award.caption,
           sortOrder: index,
         },
       });

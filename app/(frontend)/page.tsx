@@ -14,11 +14,7 @@ export default async function Home() {
 
   return (
     <>
-      <Hero
-        hero={data.hero}
-        services={data.services}
-        expertise={data.expertiseItems}
-      />
+      <Hero hero={data.hero} services={data.services} awards={data.awards} />
       <Projects projects={data.projects} />
       <Process processSteps={data.processSteps} processStats={data.processStats} />
       <Reviews testimonials={data.testimonials} site={data.site} />

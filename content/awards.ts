@@ -1,17 +1,22 @@
-export const awards = [
+import type { Award } from "@/lib/types/content";
+
+export const awards: Award[] = [
   {
-    id: "1",
-    title: "Agency of the year",
-    icon: "★",
+    id: "adage",
+    headline: "AdAge",
+    caption: "20 best agency\n2023",
+    logo: "",
   },
   {
-    id: "2",
-    title: "20 best agency 2024",
-    icon: "◆",
+    id: "agency-year",
+    headline: "Agency\nof the year",
+    caption: "",
+    logo: "",
   },
   {
-    id: "3",
-    title: "95% job success rate",
-    icon: "●",
+    id: "upwork",
+    headline: "up",
+    caption: "95% job success\non upwork",
+    logo: "",
   },
-] as const;
+];

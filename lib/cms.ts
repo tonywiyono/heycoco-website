@@ -303,11 +303,16 @@ export async function getHomePageData(locale: Locale = DEFAULT_LOCALE): Promise<
       rotation: doc.rotation ?? 0,
     }));
 
-    const awards: Award[] = awardsResult.docs.map((doc, index) => ({
-      id: String(doc.id ?? index),
-      title: doc.title,
-      icon: doc.icon,
-    }));
+    const awards: Award[] = awardsResult.docs.map((doc, index) => {
+      const fallback = staticAwards.find((item) => item.id === doc.key) ?? staticAwards[index];
+
+      return {
+        id: doc.key,
+        headline: doc.headline,
+        caption: doc.caption ?? "",
+        logo: mediaUrl(doc.logo, fallback?.logo ?? ""),
+      };
+    });
 
     const expertiseItems: ExpertiseItem[] = expertiseResult.docs.map((doc) => ({
       id: doc.key,

@@ -86,8 +86,9 @@ export type FaqItem = {
 
 export type Award = {
   id: string;
-  title: string;
-  icon: string;
+  headline: string;
+  caption: string;
+  logo: string;
 };
 
 export type ExpertiseItem = {

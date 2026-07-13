@@ -323,16 +323,29 @@ export interface FaqItem {
   createdAt: string;
 }
 /**
+ * Slides in the hero accolade carousel (Hubfolio-style card).
+ *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "awards".
  */
 export interface Award {
   id: number;
-  title: string;
   /**
-   * Emoji or symbol shown in the hero card
+   * Stable identifier (e.g. adage, upwork)
    */
-  icon: string;
+  key: string;
+  /**
+   * Large centered text. Use line breaks for multi-line headlines.
+   */
+  headline: string;
+  /**
+   * Small text shown bottom-left (e.g. “20 best agency\n2023”).
+   */
+  caption?: string | null;
+  /**
+   * Optional logo image shown centered instead of headline text.
+   */
+  logo?: (number | null) | Media;
   sortOrder?: number | null;
   updatedAt: string;
   createdAt: string;
@@ -653,8 +666,10 @@ export interface FaqItemsSelect<T extends boolean = true> {
  * via the `definition` "awards_select".
  */
 export interface AwardsSelect<T extends boolean = true> {
-  title?: T;
-  icon?: T;
+  key?: T;
+  headline?: T;
+  caption?: T;
+  logo?: T;
   sortOrder?: T;
   updatedAt?: T;
   createdAt?: T;
