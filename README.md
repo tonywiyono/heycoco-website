@@ -16,9 +16,13 @@ Open [http://localhost:3000](http://localhost:3000). Without a database, the sit
 
 With `DATABASE_URL` and `PAYLOAD_SECRET` configured:
 
-1. Run migrations: `npm run migrate`
+1. Sync schema: `npm run push:schema` (or `npm run migrate` once migration files exist)
 2. Seed content: `npm run seed`
 3. Open [http://localhost:3000/admin](http://localhost:3000/admin)
+
+**Production admin (Railway):** [https://heycoco-website-production.up.railway.app/admin](https://heycoco-website-production.up.railway.app/admin)
+
+> `https://heycoco.agency/admin` is still the old WordPress site until DNS is pointed to Railway.
 
 Default admin credentials come from `ADMIN_EMAIL` / `ADMIN_PASSWORD` in `.env.local` (see `.env.example`).
 

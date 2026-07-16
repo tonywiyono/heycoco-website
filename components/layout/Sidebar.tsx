@@ -63,6 +63,19 @@ export function Sidebar({
           </div>
 
           <div className="space-y-3">
+            <a
+              href="https://calendar.app.google/tvUFkMfP1FaBgMiz9"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex w-full items-center justify-center gap-2.5 rounded-full bg-accent px-4 py-3 text-sm font-semibold text-white transition-colors hover:bg-accent-hover"
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
+                <rect x="3" y="4" width="18" height="18" rx="2" />
+                <path d="M16 2v4M8 2v4M3 10h18" />
+              </svg>
+              Book a Consultation
+            </a>
+
             <SidebarCtaLink cta={sidebarWhatsappCta} />
 
             <button

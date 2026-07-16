@@ -12,27 +12,33 @@ export type ProcessStep = {
 
 export const processSteps: ProcessStep[] = [
   {
-    id: "research",
-    title: "Research",
+    id: "research-strategy",
+    title: "Research & Strategy",
     description:
-      "Once the wireframe get approved at step 1, we'll build prototype design to visually the idea",
+      "We start by understanding the audience, competitors, and where the brand's digital presence has gaps. Profiles get audited and optimized, and content pillars are defined from the brand's own story.",
   },
   {
-    id: "concept",
-    title: "Concept Design",
+    id: "content-planning",
+    title: "Content Planning",
     description:
-      "Once the wireframe get approved at step 1, we'll build prototype design to visually the idea",
+      "The content calendar takes shape. We develop the core content concepts and draft captions, so production starts with a clear brief instead of a blank page.",
   },
   {
-    id: "implementation",
-    title: "Implementation",
+    id: "production",
+    title: "Production",
     description:
-      "Once the wireframe get approved at step 1, we'll build prototype design to visually the idea",
+      "Photo and video shoots happen, followed by design and editing. In parallel, we set up the paid ad campaigns that will support the content once it's live.",
   },
   {
-    id: "testing",
-    title: "Testing",
+    id: "approval",
+    title: "Approval",
     description:
-      "Once the wireframe get approved at step 1, we'll build prototype design to visually the idea",
+      "Everything is reviewed and revised together with the client's internal team, visual and copy assets are finalized.",
+  },
+  {
+    id: "launch",
+    title: "Launch",
+    description:
+      "Content goes live, weekly scheduling is activated to kick off your brand journey.",
   },
 ];

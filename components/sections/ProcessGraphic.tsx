@@ -13,14 +13,16 @@ const pillStyles = [
   "border border-black/15 bg-white text-text-dark",
   "bg-black text-white",
   "bg-[#d8dce8] text-text-dark",
+  "border border-black/15 bg-white text-text-dark",
 ];
 
 export function ProcessGraphic({ steps, activeId }: ProcessGraphicProps) {
   const positions = [
-    "left-[8%] top-[10%]",
-    "right-[6%] top-[18%]",
-    "left-[18%] top-[44%]",
-    "right-[10%] bottom-[14%]",
+    "left-[4%] top-[8%]",
+    "right-[2%] top-[14%]",
+    "left-[10%] top-[36%]",
+    "right-[6%] top-[50%]",
+    "left-[16%] bottom-[10%]",
   ];
 
   return (
@@ -62,7 +64,7 @@ export function ProcessGraphic({ steps, activeId }: ProcessGraphicProps) {
           <span
             key={step.id}
             className={cn(
-              "absolute rounded-full px-4 py-2 text-xs font-semibold shadow-sm transition-transform sm:text-sm",
+              "absolute max-w-[118px] rounded-full px-3 py-2 text-center text-[10px] font-semibold leading-tight shadow-sm transition-transform sm:max-w-[132px] sm:px-4 sm:text-xs",
               positions[index] ?? "left-1/2 top-1/2",
               pillStyles[index % pillStyles.length],
               isActive && "scale-105 ring-2 ring-black/10",

@@ -134,6 +134,29 @@ async function seed() {
           sortOrder: index,
         },
       });
+    } else {
+      await payload.update({
+        collection: "process-steps",
+        id: existing.docs[0].id,
+        data: {
+          title: step.title,
+          description: step.description,
+          sortOrder: index,
+        },
+      });
+    }
+  }
+
+  const validStepKeys = new Set(processSteps.map((step) => step.id));
+  const allSteps = await payload.find({
+    collection: "process-steps",
+    limit: 100,
+    pagination: false,
+  });
+
+  for (const doc of allSteps.docs) {
+    if (!validStepKeys.has(doc.key)) {
+      await payload.delete({ collection: "process-steps", id: doc.id });
     }
   }
 
