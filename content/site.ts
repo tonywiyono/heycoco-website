@@ -11,6 +11,7 @@ export const site = {
   social: {
     x: "https://x.com/heycoco",
     instagram: "https://instagram.com/hey.cocoagency",
+    threads: "https://www.threads.com/@hey.cocoagency",
     linkedin: "https://linkedin.com/company/heycoco",
     dribbble: "https://dribbble.com/heycoco",
     clutch: "https://clutch.co/profile/heycoco",

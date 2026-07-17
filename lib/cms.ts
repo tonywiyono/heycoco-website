@@ -280,6 +280,9 @@ export async function getHomePageData(locale: Locale = DEFAULT_LOCALE): Promise<
       social: {
         x: settings.social?.x ?? staticSite.social.x,
         instagram: settings.social?.instagram ?? staticSite.social.instagram,
+        threads:
+          (settings.social as { threads?: string | null } | null | undefined)?.threads ??
+          staticSite.social.threads,
         linkedin: settings.social?.linkedin ?? staticSite.social.linkedin,
         dribbble: settings.social?.dribbble ?? staticSite.social.dribbble,
         clutch: settings.social?.clutch ?? staticSite.social.clutch,

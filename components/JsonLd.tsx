@@ -10,7 +10,7 @@ export function JsonLd({ site }: { site: SiteInfo }) {
         url: site.url,
         email: site.email,
         description: site.description,
-        sameAs: [site.social.instagram, site.social.linkedin],
+        sameAs: [site.social.instagram, site.social.threads, site.social.linkedin].filter(Boolean),
       },
       {
         "@type": "LocalBusiness",

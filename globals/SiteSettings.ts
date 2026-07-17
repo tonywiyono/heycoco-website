@@ -24,6 +24,7 @@ export const SiteSettings: GlobalConfig = {
               fields: [
                 { name: "x", type: "text" },
                 { name: "instagram", type: "text" },
+                { name: "threads", type: "text" },
                 { name: "linkedin", type: "text" },
                 { name: "dribbble", type: "text" },
                 { name: "clutch", type: "text" },

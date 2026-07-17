@@ -19,6 +19,7 @@ export type SiteInfo = {
   social: {
     x: string;
     instagram: string;
+    threads: string;
     linkedin: string;
     dribbble: string;
     clutch: string;
