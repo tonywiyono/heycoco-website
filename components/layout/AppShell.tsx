@@ -1,6 +1,7 @@
 "use client";
 
 import { SiteEffects } from "@/components/effects/SiteEffects";
+import { MobileContactFab } from "@/components/layout/MobileContactFab";
 import { MobileNav } from "@/components/layout/MobileNav";
 import { Sidebar } from "@/components/layout/Sidebar";
 import { BackToTop } from "@/components/ui/BackToTop";
@@ -62,6 +63,7 @@ export function AppShell({ children, site, navItems, sidebarWhatsappCta }: AppSh
           <main className="px-3 py-4 sm:px-4 lg:px-6 lg:py-6">{children}</main>
         </SectionObserver>
       </SiteEffects>
+      <MobileContactFab whatsappCta={sidebarWhatsappCta} />
       <BackToTop />
     </ScrollSpyProvider>
   );

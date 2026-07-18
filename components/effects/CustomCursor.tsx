@@ -15,8 +15,10 @@ export function CustomCursor() {
       "(prefers-reduced-motion: reduce)",
     ).matches;
     const isTouchPrimary = window.matchMedia("(pointer: coarse)").matches;
+    const isDesktop = window.matchMedia("(min-width: 1024px)").matches;
 
-    if (prefersReducedMotion || isTouchPrimary) return;
+    // Phone / tablet: keep the system cursor
+    if (prefersReducedMotion || isTouchPrimary || !isDesktop) return;
 
     const dot = dotRef.current;
     const ring = ringRef.current;

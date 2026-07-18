@@ -25,6 +25,15 @@ export function SiteEffects({ children }: SiteEffectsProps) {
     getReducedMotion,
     () => false,
   );
+  const isDesktop = useSyncExternalStore(
+    (onChange) => {
+      const mq = window.matchMedia("(min-width: 1024px)");
+      mq.addEventListener("change", onChange);
+      return () => mq.removeEventListener("change", onChange);
+    },
+    () => window.matchMedia("(min-width: 1024px)").matches,
+    () => false,
+  );
   const [ready, setReady] = useState(reducedMotion);
 
   const handleLoaderComplete = useCallback(() => {
@@ -34,7 +43,7 @@ export function SiteEffects({ children }: SiteEffectsProps) {
   return (
     <>
       {!ready && <PageLoader onComplete={handleLoaderComplete} />}
-      {ready && <CustomCursor />}
+      {ready && isDesktop && <CustomCursor />}
       <SmoothScroll active={ready}>{children}</SmoothScroll>
     </>
   );
