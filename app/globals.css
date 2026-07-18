@@ -17,7 +17,8 @@
   --border-interactive-hover: rgba(255, 255, 255, 0.45);
   --radius-card: 24px;
   --radius-pill: 9999px;
-  --sidebar-width: 320px;
+  --sidebar-width: 300px;
+  --page-margin: 1rem;
 }
 
 html.light {
@@ -35,6 +36,13 @@ html.light {
   --border-subtle: rgba(0, 0, 0, 0.08);
   --border-interactive: rgba(0, 0, 0, 0.18);
   --border-interactive-hover: rgba(0, 0, 0, 0.45);
+}
+
+@media (min-width: 1024px) {
+  :root,
+  html.light {
+    --page-margin: 2.5rem; /* 40px — Hubfolio-style outer frame */
+  }
 }
 
 @theme inline {
@@ -97,11 +105,11 @@ body.lenis-stopped {
 
   .main-scroll-panel {
     position: fixed;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: var(--sidebar-width);
-    height: 100dvh;
+    top: var(--page-margin);
+    right: var(--page-margin);
+    bottom: var(--page-margin);
+    left: calc(var(--sidebar-width) + var(--page-margin));
+    height: auto;
     overflow-y: auto;
     overflow-x: hidden;
     -webkit-overflow-scrolling: touch;

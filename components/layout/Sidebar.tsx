@@ -42,7 +42,7 @@ export function Sidebar({
 
   return (
     <>
-      <aside className="hidden lg:flex lg:fixed lg:inset-y-0 lg:left-0 lg:z-50 lg:w-[var(--sidebar-width)] lg:flex-col lg:bg-surface-sidebar lg:px-8 lg:py-8">
+      <aside className="hidden lg:flex lg:fixed lg:bottom-[var(--page-margin)] lg:left-[var(--page-margin)] lg:top-[var(--page-margin)] lg:z-50 lg:w-[var(--sidebar-width)] lg:flex-col lg:bg-surface-sidebar lg:px-6 lg:py-6 xl:px-8 xl:py-8">
         <div className="flex w-full items-center justify-end gap-2">
           <ThemeToggle />
           <MenuButton open={menuOpen} onClick={() => setMenuOpen((prev) => !prev)} />

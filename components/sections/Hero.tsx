@@ -68,7 +68,7 @@ export function Hero({ hero, services, awards }: HeroProps) {
 
   return (
     <Section id="home" title="Home" className="mb-4 max-lg:mb-3">
-      <div className="grid gap-3 sm:gap-4 lg:grid-cols-12 lg:grid-rows-2 lg:min-h-[calc(100dvh-3rem)]">
+      <div className="grid gap-3 sm:gap-4 lg:grid-cols-12 lg:grid-rows-2 lg:min-h-[calc(100dvh-5rem)]">
         <BentoCard
           variant="dark"
           hover={false}

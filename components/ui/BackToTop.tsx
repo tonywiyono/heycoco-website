@@ -28,7 +28,7 @@ export function BackToTop() {
     <button
       type="button"
       onClick={() => scrollToSection("home")}
-      className="fixed bottom-24 right-6 z-40 flex h-11 w-11 items-center justify-center rounded-full border border-border-interactive bg-surface-card text-text-primary transition-colors hover:border-border-interactive-hover lg:bottom-6 lg:right-8"
+      className="fixed bottom-24 right-6 z-40 flex h-11 w-11 items-center justify-center rounded-full border border-border-interactive bg-surface-card text-text-primary transition-colors hover:border-border-interactive-hover lg:bottom-[calc(var(--page-margin)+0.75rem)] lg:right-[calc(var(--page-margin)+0.75rem)]"
       aria-label="Back to top"
     >
       <svg
