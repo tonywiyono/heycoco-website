@@ -161,7 +161,7 @@ export const SiteSettings: GlobalConfig = {
                   type: "text",
                   required: true,
                   localized: true,
-                  defaultValue: "Consult Through Whatsapp",
+                  defaultValue: "Consult on Whatsapp",
                 },
                 {
                   name: "url",

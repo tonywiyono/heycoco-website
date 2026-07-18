@@ -122,7 +122,7 @@ body.lenis-stopped {
 
 @media (max-width: 1023px) {
   .main-scroll-panel {
-    padding-top: 4.5rem;
+    padding-top: 4rem; /* matches fixed mobile header h-16 */
   }
 }
 

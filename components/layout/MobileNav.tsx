@@ -13,7 +13,7 @@ export function MobileNav({ site, navItems }: { site: SiteInfo; navItems: NavIte
 
   return (
     <>
-      <header className="sticky top-0 z-50 flex h-16 items-center gap-2 bg-surface-sidebar px-4 lg:hidden">
+      <header className="fixed inset-x-0 top-0 z-[70] flex h-16 items-center gap-2 bg-surface-sidebar/95 px-4 backdrop-blur-md lg:hidden">
         <button
           type="button"
           onClick={() => scrollToSection("home")}

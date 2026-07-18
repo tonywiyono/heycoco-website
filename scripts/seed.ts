@@ -73,7 +73,7 @@ async function seed() {
       },
       sidebarWhatsappCta: {
         enabled: true,
-        label: "Consult Through Whatsapp",
+        label: "Consult on Whatsapp",
         url: site.whatsapp,
         backgroundColor: "#25D366",
         hoverBackgroundColor: "#20BD5A",

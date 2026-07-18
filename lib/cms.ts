@@ -40,7 +40,7 @@ type Locale = "en" | "id";
 function defaultSidebarWhatsappCta(overrides?: Partial<SidebarCta>): SidebarCta {
   return {
     enabled: true,
-    label: "Consult Through Whatsapp",
+    label: "Consult on Whatsapp",
     url: staticSite.whatsapp,
     backgroundColor: "#25D366",
     hoverBackgroundColor: "#20BD5A",
@@ -69,7 +69,10 @@ function mapSidebarWhatsappCta(
 
   return {
     enabled: cta.enabled ?? defaults.enabled,
-    label: cta.label ?? defaults.label,
+    label:
+      !cta.label || cta.label === "Consult Through Whatsapp"
+        ? defaults.label
+        : cta.label,
     url: cta.url ?? defaults.url,
     backgroundColor: cta.backgroundColor ?? defaults.backgroundColor,
     hoverBackgroundColor: cta.hoverBackgroundColor ?? defaults.hoverBackgroundColor,
