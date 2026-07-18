@@ -5,6 +5,7 @@ import { faqItems as staticFaq } from "@/content/faq";
 import { newsItems as staticNews } from "@/content/news";
 import { processStats as staticProcessStats, processSteps as staticProcessSteps } from "@/content/process";
 import { projects as staticProjects } from "@/content/projects";
+import { reviewsSection as staticReviewsSection } from "@/content/reviews";
 import { services as staticServices } from "@/content/services";
 import { navItems as staticNavItems, site as staticSite } from "@/content/site";
 import { career as staticCareer, teamMembers as staticTeam, teamStats as staticTeamStats } from "@/content/team";
@@ -23,6 +24,7 @@ import type {
   ProcessStat,
   ProcessStep,
   Project,
+  ReviewsSectionContent,
   ServiceTag,
   SidebarCta,
   SiteInfo,
@@ -136,8 +138,8 @@ function staticHomeData(): HomePageData {
       subheadline: "Hey Coco!, small agency\nwith big ideas",
       introText:
         "Based in Jakarta & Bali. We're an agency focused on social media, content creation, and video production.",
-      rating: "4.9/5",
-      ratingLabel: "Based on 24 reviews on Clutch",
+      rating: "5.0/5",
+      ratingLabel: "Based on Google reviews",
       expertiseSectionTitle: "Our Expertise",
     },
     services: staticServices.map((s) => ({ ...s })),
@@ -148,6 +150,7 @@ function staticHomeData(): HomePageData {
     processStats: staticProcessStats.map((s) => ({ ...s })),
     clientLogos: staticClientLogos.map((logo) => ({ ...logo })),
     testimonials: staticTestimonials.map((t) => ({ ...t })),
+    reviewsSection: { ...staticReviewsSection },
     teamMembers: staticTeam.map((m) => ({ ...m, social: m.social ? { ...m.social } : undefined })),
     teamSection: {
       headline: staticTeamStats.headline,
@@ -299,13 +302,27 @@ export async function getHomePageData(locale: Locale = DEFAULT_LOCALE): Promise<
 
     const sidebarWhatsappCta = mapSidebarWhatsappCta(settings, site.whatsapp);
 
+    const reviewsSettings = (
+      settings as {
+        reviews?: {
+          rating?: string | null;
+          ratingLabel?: string | null;
+          googleMapsUrl?: string | null;
+          ctaLabel?: string | null;
+        } | null;
+      }
+    ).reviews;
+
     const hero: HeroContent = {
       headlineLine1: settings.headlineLine1 ?? "Brand and",
       headlineLine2: settings.headlineLine2 ?? "Design",
       subheadline: settings.subheadline ?? "Hey Coco!, small agency\nwith big ideas",
       introText: settings.introText ?? staticHomeData().hero.introText,
-      rating: settings.rating ?? "4.9/5",
-      ratingLabel: settings.ratingLabel ?? "Based on 24 reviews on Clutch",
+      rating: reviewsSettings?.rating ?? settings.rating ?? "5.0/5",
+      ratingLabel:
+        reviewsSettings?.ratingLabel ??
+        settings.ratingLabel ??
+        "Based on Google reviews",
       expertiseSectionTitle: settings.expertiseSectionTitle ?? "Our Expertise",
     };
 
@@ -361,13 +378,29 @@ export async function getHomePageData(locale: Locale = DEFAULT_LOCALE): Promise<
       };
     });
 
-    const testimonials: Testimonial[] = testimonialsResult.docs.map((doc, index) => ({
-      id: String(doc.id ?? index),
-      quote: doc.quote,
-      name: doc.name,
-      role: doc.role,
-      avatar: mediaUrl(doc.avatar, `/images/avatar-${(index % 4) + 1}.svg`),
-    }));
+    const testimonials: Testimonial[] = testimonialsResult.docs.map((doc, index) => {
+      const reviewDoc = doc as typeof doc & {
+        rating?: number | null;
+        publishedLabel?: string | null;
+      };
+
+      return {
+        id: String(doc.id ?? index),
+        quote: doc.quote,
+        name: doc.name,
+        role: doc.role || "Google review",
+        avatar: mediaUrl(doc.avatar, `/images/avatar-${(index % 4) + 1}.svg`),
+        rating: typeof reviewDoc.rating === "number" ? reviewDoc.rating : 5,
+        publishedLabel: reviewDoc.publishedLabel ?? undefined,
+      };
+    });
+
+    const reviewsSection: ReviewsSectionContent = {
+      rating: reviewsSettings?.rating ?? staticReviewsSection.rating,
+      ratingLabel: reviewsSettings?.ratingLabel ?? staticReviewsSection.ratingLabel,
+      googleMapsUrl: reviewsSettings?.googleMapsUrl ?? staticReviewsSection.googleMapsUrl,
+      ctaLabel: reviewsSettings?.ctaLabel ?? staticReviewsSection.ctaLabel,
+    };
 
     const teamMembers: TeamMember[] = teamResult.docs.map((doc, index) => ({
       id: String(doc.id ?? index),
@@ -428,6 +461,7 @@ export async function getHomePageData(locale: Locale = DEFAULT_LOCALE): Promise<
       processStats,
       clientLogos: clientLogos.length ? clientLogos : staticHomeData().clientLogos,
       testimonials: testimonials.length ? testimonials : staticHomeData().testimonials,
+      reviewsSection,
       teamMembers: teamMembers.length ? teamMembers : staticHomeData().teamMembers,
       teamSection,
       newsItems: newsItems.length ? newsItems : staticHomeData().newsItems,

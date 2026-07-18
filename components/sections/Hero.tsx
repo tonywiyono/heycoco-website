@@ -111,7 +111,15 @@ export function Hero({ hero, services, awards }: HeroProps) {
                 <span className="text-accent">★★★★★</span>
               </p>
               <p className="text-xs text-text-muted">
-                {hero.ratingLabel.includes("Clutch") ? (
+                {hero.ratingLabel.includes("Google") ? (
+                  <>
+                    {hero.ratingLabel.split("Google")[0]}
+                    <a href="#reviews" className="underline hover:text-text-primary">
+                      Google
+                    </a>
+                    {hero.ratingLabel.split("Google")[1]}
+                  </>
+                ) : hero.ratingLabel.includes("Clutch") ? (
                   <>
                     {hero.ratingLabel.split("Clutch")[0]}
                     <a href="#reviews" className="underline hover:text-text-primary">

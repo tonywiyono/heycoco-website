@@ -96,6 +96,53 @@ export const SiteSettings: GlobalConfig = {
           ],
         },
         {
+          label: "Reviews",
+          fields: [
+            {
+              name: "reviews",
+              type: "group",
+              label: "Google Maps reviews",
+              admin: {
+                description:
+                  "Manual Google reviews setup. Paste featured reviews in the Testimonials collection.",
+              },
+              fields: [
+                {
+                  name: "rating",
+                  type: "text",
+                  required: true,
+                  defaultValue: "5.0/5",
+                  admin: { description: "Shown in Reviews header and Hero (e.g. 5.0/5)" },
+                },
+                {
+                  name: "ratingLabel",
+                  type: "text",
+                  required: true,
+                  localized: true,
+                  defaultValue: "Based on Google reviews",
+                  admin: { description: "e.g. Based on 24 reviews on Google" },
+                },
+                {
+                  name: "googleMapsUrl",
+                  type: "text",
+                  required: true,
+                  admin: {
+                    description:
+                      "Google Maps / Business Profile link (View all reviews / Write a review)",
+                  },
+                },
+                {
+                  name: "ctaLabel",
+                  type: "text",
+                  required: true,
+                  localized: true,
+                  defaultValue: "Read all reviews on Google →",
+                },
+              ],
+            },
+          ],
+        },
+        {
           label: "Sidebar",
           fields: [
             {

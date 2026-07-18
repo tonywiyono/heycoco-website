@@ -244,14 +244,36 @@ export interface Project {
   _status?: ('draft' | 'published') | null;
 }
 /**
+ * Paste reviews manually from Google Maps / Business Profile.
+ *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "testimonials".
  */
 export interface Testimonial {
   id: number;
+  /**
+   * Review text copied from Google
+   */
   quote: string;
+  /**
+   * Reviewer display name from Google
+   */
   name: string;
-  role: string;
+  /**
+   * Optional subtitle (e.g. Google review, Local Guide)
+   */
+  role?: string | null;
+  /**
+   * Star rating from Google (1–5)
+   */
+  rating?: number | null;
+  /**
+   * Optional date label from Google (e.g. 2 months ago)
+   */
+  publishedLabel?: string | null;
+  /**
+   * Optional reviewer photo
+   */
   avatar?: (number | null) | Media;
   sortOrder?: number | null;
   updatedAt: string;
@@ -633,6 +655,8 @@ export interface TestimonialsSelect<T extends boolean = true> {
   quote?: T;
   name?: T;
   role?: T;
+  rating?: T;
+  publishedLabel?: T;
   avatar?: T;
   sortOrder?: T;
   updatedAt?: T;
@@ -821,6 +845,7 @@ export interface SiteSetting {
   social?: {
     x?: string | null;
     instagram?: string | null;
+    threads?: string | null;
     linkedin?: string | null;
     dribbble?: string | null;
     clutch?: string | null;
@@ -858,6 +883,24 @@ export interface SiteSetting {
         id?: string | null;
       }[]
     | null;
+  /**
+   * Manual Google reviews setup. Paste featured reviews in the Testimonials collection.
+   */
+  reviews: {
+    /**
+     * Shown in Reviews header and Hero (e.g. 5.0/5)
+     */
+    rating: string;
+    /**
+     * e.g. Based on 24 reviews on Google
+     */
+    ratingLabel: string;
+    /**
+     * Google Maps / Business Profile link (View all reviews / Write a review)
+     */
+    googleMapsUrl: string;
+    ctaLabel: string;
+  };
   sidebarWhatsappCta: {
     enabled?: boolean | null;
     label: string;
@@ -899,6 +942,7 @@ export interface SiteSettingsSelect<T extends boolean = true> {
     | {
         x?: T;
         instagram?: T;
+        threads?: T;
         linkedin?: T;
         dribbble?: T;
         clutch?: T;
@@ -934,6 +978,14 @@ export interface SiteSettingsSelect<T extends boolean = true> {
         value?: T;
         label?: T;
         id?: T;
+      };
+  reviews?:
+    | T
+    | {
+        rating?: T;
+        ratingLabel?: T;
+        googleMapsUrl?: T;
+        ctaLabel?: T;
       };
   sidebarWhatsappCta?:
     | T

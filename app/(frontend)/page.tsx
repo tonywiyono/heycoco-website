@@ -21,7 +21,10 @@ export default async function Home() {
         clientLogos={data.clientLogos}
       />
       <Projects projects={data.projects} />
-      <Reviews testimonials={data.testimonials} site={data.site} />
+      <Reviews
+        testimonials={data.testimonials}
+        reviewsSection={data.reviewsSection}
+      />
       <Team teamMembers={data.teamMembers} teamSection={data.teamSection} />
       <News newsItems={data.newsItems} />
       <Contact faqItems={data.faqItems} site={data.site} />

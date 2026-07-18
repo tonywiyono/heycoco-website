@@ -53,8 +53,8 @@ async function seed() {
       subheadline: "Hey Coco!, small agency\nwith big ideas",
       introText:
         "Based in Jakarta & Bali. We're an agency focused on social media, content creation, and video production.",
-      rating: "4.9/5",
-      ratingLabel: "Based on 24 reviews on Clutch",
+      rating: "5.0/5",
+      ratingLabel: "Based on Google reviews",
       expertiseSectionTitle: "Our Expertise",
       teamHeadline: teamStats.headline,
       teamSubhead: teamStats.subhead,
@@ -65,6 +65,12 @@ async function seed() {
         value: stat.value,
         label: stat.label,
       })),
+      reviews: {
+        rating: "5.0/5",
+        ratingLabel: "Based on Google reviews",
+        googleMapsUrl: "https://maps.google.com/?q=Hey+Coco+Agency",
+        ctaLabel: "Read all reviews on Google →",
+      },
       sidebarWhatsappCta: {
         enabled: true,
         label: "Consult Through Whatsapp",
@@ -232,6 +238,8 @@ async function seed() {
           quote: item.quote,
           name: item.name,
           role: item.role,
+          rating: item.rating,
+          publishedLabel: item.publishedLabel,
           sortOrder: index,
         },
       });

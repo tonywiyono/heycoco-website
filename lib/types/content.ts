@@ -54,6 +54,15 @@ export type Testimonial = {
   name: string;
   role: string;
   avatar: string;
+  rating: number;
+  publishedLabel?: string;
+};
+
+export type ReviewsSectionContent = {
+  rating: string;
+  ratingLabel: string;
+  googleMapsUrl: string;
+  ctaLabel: string;
 };
 
 export type TeamMember = {
@@ -158,6 +167,7 @@ export type HomePageData = {
   processStats: ProcessStat[];
   clientLogos: ClientLogo[];
   testimonials: Testimonial[];
+  reviewsSection: ReviewsSectionContent;
   teamMembers: TeamMember[];
   teamSection: TeamSectionContent;
   newsItems: NewsItem[];
