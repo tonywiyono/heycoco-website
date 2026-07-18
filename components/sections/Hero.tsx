@@ -67,12 +67,12 @@ export function Hero({ hero, services, awards }: HeroProps) {
   const subheadLines = hero.subheadline.split("\n");
 
   return (
-    <Section id="home" title="Home" className="mb-4">
+    <Section id="home" title="Home" className="mb-4 max-lg:mb-3">
       <div className="grid gap-3 sm:gap-4 lg:grid-cols-12 lg:grid-rows-2 lg:min-h-[calc(100dvh-3rem)]">
         <BentoCard
           variant="dark"
           hover={false}
-          className="relative flex min-h-[420px] flex-col justify-between overflow-hidden p-6 sm:p-10 lg:col-span-9 lg:row-span-2 lg:min-h-0 lg:h-full"
+          className="relative flex h-[calc(100dvh-5rem)] min-h-[420px] flex-col justify-between overflow-hidden p-6 sm:h-[calc(100dvh-5rem)] sm:p-10 lg:col-span-9 lg:row-span-2 lg:h-full lg:min-h-0"
         >
           <div className="pointer-events-none absolute inset-0">
             <Image
