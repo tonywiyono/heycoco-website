@@ -473,6 +473,34 @@ export async function getHomePageData(locale: Locale = DEFAULT_LOCALE): Promise<
   }
 }
 
+export async function getAllProjects(
+  locale: Locale = DEFAULT_LOCALE,
+): Promise<Project[]> {
+  if (!isCmsConfigured()) {
+    return staticProjects.map((p) => ({ ...p }));
+  }
+
+  try {
+    const payload = await getPayloadClient();
+    const draft = await getDraftFlag();
+    const result = await payload.find({
+      collection: "projects",
+      locale,
+      sort: "sortOrder",
+      limit: 100,
+      pagination: false,
+      draft,
+      ...(draft ? {} : { where: { _status: { equals: "published" } } }),
+    });
+
+    const projects = result.docs.map((doc, index) => mapProjectFromDoc(doc, index));
+    return projects.length ? projects : staticProjects.map((p) => ({ ...p }));
+  } catch (error) {
+    console.error("[cms] Failed to load projects:", error);
+    return staticProjects.map((p) => ({ ...p }));
+  }
+}
+
 export async function getProjectBySlug(
   slug: string,
   locale: Locale = DEFAULT_LOCALE,

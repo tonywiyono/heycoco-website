@@ -272,6 +272,8 @@ export function Projects({ projects }: { projects: Project[] }) {
 
   if (!projects.length) return null;
 
+  const featuredProjects = projects.slice(0, 6);
+
   return (
     <>
       <Section id="projects" title="Projects" className="mb-4">
@@ -284,7 +286,7 @@ export function Projects({ projects }: { projects: Project[] }) {
           </ScrollReveal>
 
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {projects.map((project, index) => (
+            {featuredProjects.map((project, index) => (
               <ProjectCard
                 key={project.slug}
                 project={project}
@@ -295,7 +297,7 @@ export function Projects({ projects }: { projects: Project[] }) {
           </div>
 
           <ScrollReveal className="mt-12 text-center" delay={0.1}>
-            <Button href="#contact" variant="primary">
+            <Button href="/projects" variant="primary">
               See All Our Projects →
             </Button>
           </ScrollReveal>

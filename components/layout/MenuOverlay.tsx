@@ -4,6 +4,7 @@ import type { NavItem, SiteInfo } from "@/lib/types/content";
 import { cn } from "@/lib/cn";
 import { scrollToSection, useScrollSpy } from "@/lib/scroll-spy";
 import { AnimatePresence, motion } from "framer-motion";
+import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
 type MenuOverlayProps = {
@@ -49,6 +50,7 @@ const navItem = {
 
 export function MenuOverlay({ open, onClose, navItems, site }: MenuOverlayProps) {
   const { activeSection } = useScrollSpy();
+  const router = useRouter();
 
   useEffect(() => {
     if (!open) return;
@@ -65,9 +67,15 @@ export function MenuOverlay({ open, onClose, navItems, site }: MenuOverlayProps)
     };
   }, [open, onClose]);
 
-  const handleNav = (id: string) => {
+  const handleNav = (item: NavItem) => {
     onClose();
-    scrollToSection(id);
+    // Route items (paths like "/projects") navigate to their own page;
+    // anchor items ("#section") smooth-scroll within the current page.
+    if (item.href.startsWith("/")) {
+      router.push(item.href);
+      return;
+    }
+    scrollToSection(item.id);
   };
 
   return (
@@ -116,7 +124,7 @@ export function MenuOverlay({ open, onClose, navItems, site }: MenuOverlayProps)
                 >
                   <button
                     type="button"
-                    onClick={() => handleNav(item.id)}
+                    onClick={() => handleNav(item)}
                     className={cn(
                       "text-left text-4xl font-bold transition-colors sm:text-5xl lg:text-6xl",
                       activeSection === item.id
