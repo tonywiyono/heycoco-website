@@ -60,7 +60,7 @@ export function AppShell({ children, site, navItems, sidebarWhatsappCta }: AppSh
       <Sidebar site={site} navItems={navItems} sidebarWhatsappCta={sidebarWhatsappCta} />
       <SiteEffects>
         <SectionObserver navItems={navItems}>
-          <main className="px-3 pb-4 sm:px-4 lg:px-6 lg:py-6">{children}</main>
+          <main className="px-3 pb-4 pt-[10px] sm:px-4 lg:px-6 lg:py-6">{children}</main>
         </SectionObserver>
       </SiteEffects>
       <MobileContactFab whatsappCta={sidebarWhatsappCta} />
