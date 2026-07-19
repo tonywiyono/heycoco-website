@@ -72,7 +72,7 @@ export function Hero({ hero, services, awards }: HeroProps) {
         <BentoCard
           variant="dark"
           hover={false}
-          className="relative flex h-[calc(100dvh-5rem)] min-h-[420px] flex-col justify-between overflow-hidden p-6 sm:h-[calc(100dvh-5rem)] sm:p-10 lg:col-span-9 lg:row-span-2 lg:h-full lg:min-h-0"
+          className="relative flex h-[calc(100dvh-1.5rem)] min-h-[420px] flex-col justify-between overflow-hidden p-6 sm:h-[calc(100dvh-1.5rem)] sm:p-10 lg:col-span-9 lg:row-span-2 lg:h-full lg:min-h-0"
         >
           <div className="pointer-events-none absolute inset-0">
             <Image
