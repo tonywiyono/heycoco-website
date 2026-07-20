@@ -13,11 +13,11 @@ export function MobileNav({ site, navItems }: { site: SiteInfo; navItems: NavIte
 
   return (
     <>
-      <header className="fixed left-[5px] right-[5px] top-0 z-50 flex h-16 items-center gap-2 px-4 lg:hidden">
+      <header className="fixed left-[5px] right-[5px] top-0 z-50 flex h-16 items-center gap-2 px-4 pt-3 lg:hidden">
         <button
           type="button"
           onClick={() => scrollToSection("home")}
-          className="mr-auto flex items-center"
+          className="mr-auto ml-1 flex items-center"
           aria-label="Scroll to top"
         >
           <div className="overflow-hidden rounded-full bg-neutral-900" style={{ width: 32, height: 32 }}>
@@ -31,11 +31,12 @@ export function MobileNav({ site, navItems }: { site: SiteInfo; navItems: NavIte
           </div>
         </button>
 
-        <ThemeToggle size="sm" />
+        <ThemeToggle size="sm" className="mix-blend-difference !text-white" />
         <MenuButton
           open={menuOpen}
           size="sm"
           onClick={() => setMenuOpen((prev) => !prev)}
+          className="mr-1 mix-blend-difference !text-white"
         />
       </header>
 
