@@ -136,9 +136,9 @@ function staticHomeData(): HomePageData {
     navItems: staticNavItems.map((item) => ({ ...item })),
     sidebarWhatsappCta: defaultSidebarWhatsappCta(),
     hero: {
-      headlineLine1: "Brand and",
-      headlineLine2: "Design",
-      subheadline: "Hey Coco!, small agency\nwith big ideas",
+      headlineLine1: "Hey Coco!",
+      headlineLine2: "Creative Agency",
+      subheadline: "Growing with you for every step of your journey",
       introText:
         "Based in Jakarta & Bali. We're an agency focused on social media, content creation, and video production.",
       rating: "5.0/5",
@@ -317,9 +317,9 @@ export async function getHomePageData(locale: Locale = DEFAULT_LOCALE): Promise<
     ).reviews;
 
     const hero: HeroContent = {
-      headlineLine1: settings.headlineLine1 ?? "Brand and",
-      headlineLine2: settings.headlineLine2 ?? "Design",
-      subheadline: settings.subheadline ?? "Hey Coco!, small agency\nwith big ideas",
+      headlineLine1: settings.headlineLine1 ?? "Hey Coco!",
+      headlineLine2: settings.headlineLine2 ?? "Creative Agency",
+      subheadline: settings.subheadline ?? "Growing with you for every step of your journey",
       introText: settings.introText ?? staticHomeData().hero.introText,
       rating: reviewsSettings?.rating ?? settings.rating ?? "5.0/5",
       ratingLabel:

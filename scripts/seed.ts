@@ -48,9 +48,9 @@ async function seed() {
         label: item.label,
         href: item.href,
       })),
-      headlineLine1: "Brand and",
-      headlineLine2: "Design",
-      subheadline: "Hey Coco!, small agency\nwith big ideas",
+      headlineLine1: "Hey Coco!",
+      headlineLine2: "Creative Agency",
+      subheadline: "Growing with you for every step of your journey",
       introText:
         "Based in Jakarta & Bali. We're an agency focused on social media, content creation, and video production.",
       rating: "5.0/5",
