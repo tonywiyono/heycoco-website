@@ -38,10 +38,10 @@ export function Team({ teamMembers, teamSection }: TeamProps) {
           <div className="relative flex h-full flex-col justify-between p-6 sm:p-10">
             <div>
               <h2 className="text-4xl font-bold sm:text-5xl lg:text-6xl">
-                {teamSection.headline.split(" ").map((word, i) => (
-                  <span key={word}>
+                {teamSection.headline.split(" ").map((word, i, words) => (
+                  <span key={`${word}-${i}`}>
                     {word}
-                    {i === 0 && <br />}
+                    {i === 0 ? <br /> : i < words.length - 1 ? " " : null}
                   </span>
                 ))}
               </h2>

@@ -79,7 +79,7 @@ export function MobileContactFab({ whatsappCta }: MobileContactFabProps) {
   return (
     <div
       ref={rootRef}
-      className="fixed bottom-6 right-6 z-40 lg:hidden"
+      className="fixed bottom-6 right-6 z-50 lg:hidden"
       onMouseEnter={() => setOpen(true)}
       onMouseLeave={() => setOpen(false)}
     >
@@ -91,7 +91,7 @@ export function MobileContactFab({ whatsappCta }: MobileContactFabProps) {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 8, scale: 0.96 }}
             transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
-            className="w-[min(calc(100vw-3rem),280px)] rounded-[28px] border border-border-subtle bg-surface-card p-3 shadow-2xl"
+            className="w-[min(calc(100vw-3rem),280px)]"
             role="dialog"
             aria-label="Contact options"
           >
