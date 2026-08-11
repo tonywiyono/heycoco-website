@@ -76,7 +76,7 @@ export function Hero({ hero, services, awards }: HeroProps) {
         >
           <div className="pointer-events-none absolute inset-0">
             <Image
-              src="/images/hero-chess.svg"
+              src="/images/hero-banner.svg"
               alt=""
               fill
               className="object-cover object-center"
