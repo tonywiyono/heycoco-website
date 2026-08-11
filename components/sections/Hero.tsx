@@ -6,7 +6,6 @@ import { BentoCard } from "@/components/ui/BentoCard";
 import { Tag } from "@/components/ui/Tag";
 import type { Award, HeroContent, ServiceTag } from "@/lib/types/content";
 import { motion } from "framer-motion";
-import Image from "next/image";
 import { useState } from "react";
 
 type HeroProps = {
@@ -74,15 +73,30 @@ export function Hero({ hero, services, awards }: HeroProps) {
           hover={false}
           className="relative flex h-[calc(100dvh-1rem)] min-h-[420px] flex-col justify-between overflow-hidden p-6 sm:h-[calc(100dvh-1rem)] sm:p-10 lg:col-span-9 lg:row-span-2 lg:h-full lg:min-h-0"
         >
-          <div className="pointer-events-none absolute inset-0">
-            <Image
-              src="/images/hero-banner.svg"
-              alt=""
-              fill
-              className="object-cover object-center"
-              priority
+          <div
+            className="pointer-events-none absolute inset-0"
+            style={{
+              background:
+                "linear-gradient(135deg, #1a1a1a 0%, #2d1810 20%, #e8700a 50%, #ff9a3c 75%, #ffcc80 100%)",
+            }}
+          >
+            <div
+              className="absolute inset-0 opacity-[0.12]"
+              style={{
+                backgroundImage:
+                  "radial-gradient(circle, #000 1px, transparent 1px)",
+                backgroundSize: "8px 8px",
+              }}
             />
-            <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-transparent" />
+            <div
+              className="absolute bottom-0 right-0 h-3/4 w-3/4 opacity-[0.08]"
+              style={{
+                backgroundImage:
+                  "radial-gradient(circle, #fff 1.5px, transparent 1.5px)",
+                backgroundSize: "12px 12px",
+              }}
+            />
+            <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/30 to-transparent" />
           </div>
 
           <div className="relative z-10">
