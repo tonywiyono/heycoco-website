@@ -50,7 +50,7 @@ async function seed() {
       })),
       headlineLine1: "Hey Coco!",
       headlineLine2: "Creative Agency",
-      subheadline: "Growing with you for every step of your journey",
+      subheadline: "For anyone who dare to grow",
       introText:
         "Based in Jakarta & Bali. We're an agency focused on social media, content creation, and video production.",
       rating: "5.0/5",

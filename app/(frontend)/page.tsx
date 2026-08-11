@@ -1,3 +1,4 @@
+import { ClientStats } from "@/components/sections/ClientStats";
 import { Contact } from "@/components/sections/Contact";
 import { Hero } from "@/components/sections/Hero";
 import { News } from "@/components/sections/News";
@@ -15,12 +16,12 @@ export default async function Home() {
   return (
     <>
       <Hero hero={data.hero} services={data.services} awards={data.awards} />
-      <Process
-        processSteps={data.processSteps}
-        processStats={data.processStats}
+      <ClientStats
         clientLogos={data.clientLogos}
+        processStats={data.processStats}
       />
       <Projects projects={data.projects} />
+      <Process processSteps={data.processSteps} />
       <Reviews
         testimonials={data.testimonials}
         reviewsSection={data.reviewsSection}

@@ -138,7 +138,7 @@ function staticHomeData(): HomePageData {
     hero: {
       headlineLine1: "Hey Coco!",
       headlineLine2: "Creative Agency",
-      subheadline: "Growing with you for every step of your journey",
+      subheadline: "For anyone who dare to grow",
       introText:
         "Based in Jakarta & Bali. We're an agency focused on social media, content creation, and video production.",
       rating: "5.0/5",
@@ -319,7 +319,7 @@ export async function getHomePageData(locale: Locale = DEFAULT_LOCALE): Promise<
     const hero: HeroContent = {
       headlineLine1: settings.headlineLine1 ?? "Hey Coco!",
       headlineLine2: settings.headlineLine2 ?? "Creative Agency",
-      subheadline: settings.subheadline ?? "Growing with you for every step of your journey",
+      subheadline: settings.subheadline ?? "For anyone who dare to grow",
       introText: settings.introText ?? staticHomeData().hero.introText,
       rating: reviewsSettings?.rating ?? settings.rating ?? "5.0/5",
       ratingLabel:
