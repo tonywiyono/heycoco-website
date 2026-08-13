@@ -3,6 +3,30 @@
 import { cn } from "@/lib/cn";
 import type { ClientLogo } from "@/lib/types/content";
 import Image from "next/image";
+import { useState } from "react";
+
+function LogoItem({ logo }: { logo: ClientLogo }) {
+  const [failed, setFailed] = useState(false);
+
+  if (!logo.logo || failed) {
+    return (
+      <span className="whitespace-nowrap text-sm font-semibold uppercase tracking-[0.2em] text-white/90 sm:text-base">
+        {logo.name}
+      </span>
+    );
+  }
+
+  return (
+    <Image
+      src={logo.logo}
+      alt={logo.name}
+      width={140}
+      height={48}
+      className="h-8 w-auto max-w-[140px] object-contain opacity-90 brightness-0 invert sm:h-10"
+      onError={() => setFailed(true)}
+    />
+  );
+}
 
 type LogoMarqueeProps = {
   logos: ClientLogo[];
@@ -28,19 +52,7 @@ export function LogoMarquee({ logos, className }: LogoMarqueeProps) {
             key={`${logo.id}-${index}`}
             className="flex h-10 shrink-0 items-center justify-center sm:h-12"
           >
-            {logo.logo ? (
-              <Image
-                src={logo.logo}
-                alt={logo.name}
-                width={140}
-                height={48}
-                className="h-8 w-auto max-w-[140px] object-contain opacity-90 brightness-0 invert sm:h-10"
-              />
-            ) : (
-              <span className="whitespace-nowrap text-sm font-semibold uppercase tracking-[0.2em] text-white/90 sm:text-base">
-                {logo.name}
-              </span>
-            )}
+            <LogoItem logo={logo} />
           </div>
         ))}
       </div>

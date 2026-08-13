@@ -100,7 +100,7 @@ export function Hero({ hero, services, awards }: HeroProps) {
           </div>
 
           <div className="relative z-10">
-            <h1 className="text-4xl font-bold leading-[1.1] tracking-tight sm:text-5xl lg:text-6xl xl:text-7xl">
+            <h1 className="text-4xl font-bold leading-[1.1] tracking-tight text-white sm:text-5xl lg:text-6xl xl:text-7xl">
               {hero.headlineLine1}
               <br />
               {hero.headlineLine2}
