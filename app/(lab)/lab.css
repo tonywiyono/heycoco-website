@@ -115,6 +115,10 @@ body {
 .lab-btn .chip { transition: transform 0.35s var(--lab-ease); }
 .lab-btn:hover .chip { transform: translateX(2px) scale(1.05); }
 
+/* Nav CTA: the "+" chip turns a quarter on hover */
+.lab-cta .chip { transition: transform 0.45s var(--lab-ease); }
+.lab-cta:hover .chip { transform: rotate(90deg); }
+
 /* Logo wobble on hover (nav) */
 @keyframes lab-wobble {
   0%, 100% { transform: rotate(0); }
@@ -229,10 +233,13 @@ body {
   outline: 2px solid var(--lab-ink);
   outline-offset: 3px;
 }
+/* ...white over the nav's dark glass, where an ink ring would vanish */
+[data-tone="glass"] :where(a, button):focus-visible { outline-color: #ffffff; }
 
 @media (prefers-reduced-motion: reduce) {
   .lab-reveal { opacity: 1; transform: none; transition: none; }
   .lab-marquee, .lab-bob, .lab-logo:hover { animation: none; }
+  .lab-cta:hover .chip { transform: none; }
   .lab-slide { animation: none; }
   .lab-sway, .lab-plant-on, .lab-flutter, .lab-rustle, .lab-stage-intro, .lab-stage-burst .lab-bit { animation: none; }
   .lab-slide:first-of-type { opacity: 1; }

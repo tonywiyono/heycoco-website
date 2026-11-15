@@ -262,7 +262,7 @@ export function GrowthLadder() {
 
       {/* Phones: one stage at a time, with a big illustration and left/right arrows (swipe works too). */}
       <div
-        className="sm:hidden"
+        className="overflow-x-clip sm:hidden" /* the scaled-up plants must not widen the page */
         onTouchStart={(e) => (touchX.current = e.touches[0].clientX)}
         onTouchEnd={(e) => {
           if (touchX.current === null) return;
