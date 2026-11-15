@@ -1,27 +1,15 @@
 import type { NextConfig } from "next";
-import { withPayload } from "@payloadcms/next/withPayload";
 
 const nextConfig: NextConfig = {
+  staticPageGenerationTimeout: 180,
   images: {
-    remotePatterns: [
-      {
-        protocol: "https",
-        hostname: "**",
-      },
-      {
-        protocol: "http",
-        hostname: "localhost",
-      },
-    ],
-    dangerouslyAllowSVG: true,
-    contentDispositionType: "attachment",
-    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
+    formats: ["image/avif", "image/webp"],
   },
-  // The new site lives at /lab; the homepage sends visitors straight there.
+  // Dev copy: the site lives at /lab here (the live copy, hey-coco-website-new, serves it from the root).
   // Temporary (307) on purpose, so it is easy to change later without browsers caching it forever.
   async redirects() {
     return [{ source: "/", destination: "/lab", permanent: false }];
   },
 };
 
-export default withPayload(nextConfig);
+export default nextConfig;

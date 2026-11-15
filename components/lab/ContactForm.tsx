@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
+import { site } from "@/content/site";
 
 const services = ["Production", "Social media", "Performance", "Not sure yet"];
 const budgets = ["Under Rp 10 jt", "Rp 10–30 jt", "Rp 30–100 jt", "Rp 100 jt+", "Let’s talk"];
@@ -9,10 +10,14 @@ const field =
   "w-full rounded-xl border border-lab-line2 bg-white px-4 py-3 text-[15px] outline-none transition-colors placeholder:text-lab-light focus:border-lab-ink";
 const label = "grid gap-1.5 text-[13px] font-medium";
 
-/** Posts to the existing /api/contact route (saves to Payload, emails via Resend when configured). */
+/**
+ * Posts to /api/contact (emails the enquiry via Resend when configured). If email sending is not set up or fails,
+ * the form switches to a fallback: an email link with the enquiry pre-filled, plus WhatsApp, so nothing is lost.
+ */
 export function ContactForm({ defaultService = "" }: { defaultService?: string }) {
-  const [state, setState] = useState<"idle" | "sending" | "done" | "error">("idle");
+  const [state, setState] = useState<"idle" | "sending" | "done" | "error" | "fallback">("idle");
   const [error, setError] = useState("");
+  const [mailto, setMailto] = useState("");
 
   async function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -22,20 +27,32 @@ export function ContactForm({ defaultService = "" }: { defaultService?: string }
     const brand = String(f.get("brand") || "").trim();
     const service = String(f.get("service") || "");
     const extra = String(f.get("link") || "").trim();
+    const payload = {
+      name: String(f.get("name") || ""),
+      email: String(f.get("email") || ""),
+      subject: [service || "General", brand].filter(Boolean).join(" — "),
+      budget: String(f.get("budget") || "") || undefined,
+      message: [String(f.get("message") || ""), extra && `Instagram / website: ${extra}`].filter(Boolean).join("\n\n"),
+      website: String(f.get("website") || ""),
+    };
+    const fallback = () => {
+      const body = [`Hi Hey Coco!,`, ``, payload.message, ``, payload.budget ? `Budget: ${payload.budget}` : "", `From: ${payload.name} (${payload.email})`]
+        .filter((l, i, a) => l !== "" || a[i - 1] !== "")
+        .join("\n");
+      setMailto(`mailto:${site.email}?subject=${encodeURIComponent(`Enquiry: ${payload.subject}`)}&body=${encodeURIComponent(body)}`);
+      setState("fallback");
+    };
     try {
       const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name: f.get("name"),
-          email: f.get("email"),
-          subject: [service || "General", brand].filter(Boolean).join(" — "),
-          budget: f.get("budget") || undefined,
-          message: [String(f.get("message") || ""), extra && `Instagram / website: ${extra}`].filter(Boolean).join("\n\n"),
-          website: f.get("website") || "",
-        }),
+        body: JSON.stringify(payload),
       });
-      if (!res.ok) throw new Error((await res.json().catch(() => ({}))).error || "Something went wrong.");
+      if (!res.ok) {
+        const j = await res.json().catch(() => ({}));
+        if (j.fallback) return fallback();
+        throw new Error(j.error || "Something went wrong.");
+      }
       setState("done");
     } catch (err) {
       setError(err instanceof Error ? err.message : "Something went wrong.");
@@ -49,6 +66,24 @@ export function ContactForm({ defaultService = "" }: { defaultService?: string }
         <p className="t-mono text-lab-accent">Message received</p>
         <p className="t-h3 mt-3">Thank you, we’ve got it.</p>
         <p className="t-body mt-2">We’ll reply within a day. If it’s urgent, message us on WhatsApp.</p>
+      </div>
+    );
+  }
+
+  if (state === "fallback") {
+    return (
+      <div role="status" className="rounded-2xl border border-lab-line bg-white p-8">
+        <p className="t-mono text-lab-accent">One more step</p>
+        <p className="t-h3 mt-3">Send it straight to our inbox.</p>
+        <p className="t-body mt-2">Our form can’t send right now, so we’ve written the email for you. Just press send, or message us on WhatsApp.</p>
+        <div className="mt-6 flex flex-wrap gap-3">
+          <a href={mailto} className="lab-btn inline-flex h-11 items-center rounded-full bg-lab-ink px-5 text-[13.5px] font-medium text-white">
+            Email {site.email}
+          </a>
+          <a href={site.whatsapp} target="_blank" rel="noopener noreferrer" className="inline-flex h-11 items-center rounded-full border border-lab-line2 px-5 text-[13.5px] font-medium">
+            WhatsApp us
+          </a>
+        </div>
       </div>
     );
   }

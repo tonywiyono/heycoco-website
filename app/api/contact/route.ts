@@ -1,106 +1,67 @@
-import { saveContactSubmission } from "@/lib/cms";
 import { NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
 import { z } from "zod";
 
-const contactSchema = z.object({
+/**
+ * Contact form endpoint. Emails the enquiry via Resend when RESEND_API_KEY is set on the server
+ * (optionally CONTACT_TO / CONTACT_FROM). Without a key it answers 503 `{ fallback: true }` and the form
+ * offers an email / WhatsApp link instead, so no enquiry is lost.
+ */
+const schema = z.object({
   name: z.string().min(2),
   email: z.string().email(),
   subject: z.string().min(2),
   budget: z.string().optional(),
   message: z.string().min(10),
-  website: z.string().max(0).optional(),
+  website: z.string().max(0).optional(), // honeypot
 });
 
-const rateLimit = new Map<string, { count: number; resetAt: number }>();
-const RATE_LIMIT = 5;
-const RATE_WINDOW_MS = 60 * 60 * 1000;
+const hits = new Map<string, { count: number; resetAt: number }>();
+const LIMIT = 5;
+const WINDOW_MS = 60 * 60 * 1000;
 
-function isRateLimited(ip: string): boolean {
+function limited(ip: string) {
   const now = Date.now();
-  const entry = rateLimit.get(ip);
-
-  if (!entry || now > entry.resetAt) {
-    rateLimit.set(ip, { count: 1, resetAt: now + RATE_WINDOW_MS });
+  const e = hits.get(ip);
+  if (!e || now > e.resetAt) {
+    hits.set(ip, { count: 1, resetAt: now + WINDOW_MS });
     return false;
   }
-
-  if (entry.count >= RATE_LIMIT) return true;
-
-  entry.count++;
-  return false;
+  e.count++;
+  return e.count > LIMIT;
 }
 
-export async function POST(request: NextRequest) {
+const esc = (s: string) => s.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]!);
+
+export async function POST(req: NextRequest) {
+  const ip = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "unknown";
+  if (limited(ip)) return NextResponse.json({ error: "Too many requests. Please try again later." }, { status: 429 });
+
+  let data: z.infer<typeof schema>;
   try {
-    const ip =
-      request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "unknown";
+    data = schema.parse(await req.json());
+  } catch {
+    return NextResponse.json({ error: "Please check the form and try again." }, { status: 400 });
+  }
+  if (data.website) return NextResponse.json({ success: true });
 
-    if (isRateLimited(ip)) {
-      return NextResponse.json(
-        { error: "Too many requests. Please try again later." },
-        { status: 429 },
-      );
-    }
+  const key = process.env.RESEND_API_KEY;
+  if (!key) return NextResponse.json({ error: "Email sending is not set up yet.", fallback: true }, { status: 503 });
 
-    const body = await request.json();
-    const data = contactSchema.parse(body);
-
-    if (data.website) {
-      return NextResponse.json({ success: true });
-    }
-
-    await saveContactSubmission({
-      name: data.name,
-      email: data.email,
-      subject: data.subject,
-      budget: data.budget,
-      message: data.message,
-      sourceIp: ip,
-    });
-
-    const apiKey = process.env.RESEND_API_KEY;
-    const toEmail = process.env.CONTACT_TO_EMAIL ?? "weare@heycoco.agency";
-
-    if (!apiKey) {
-      console.log("[contact] Resend not configured. Submission:", {
-        name: data.name,
-        email: data.email,
-        subject: data.subject,
-      });
-      return NextResponse.json({ success: true });
-    }
-
-    const resend = new Resend(apiKey);
-
-    await resend.emails.send({
-      from: "Hey Coco! <onboarding@resend.dev>",
-      to: toEmail,
+  try {
+    const resend = new Resend(key);
+    const { error } = await resend.emails.send({
+      from: process.env.CONTACT_FROM ?? "Hey Coco! website <onboarding@resend.dev>",
+      to: process.env.CONTACT_TO ?? "weare@heycoco.agency",
       replyTo: data.email,
-      subject: `New inquiry from ${data.name} — ${data.subject}`,
-      text: [
-        `Name: ${data.name}`,
-        `Email: ${data.email}`,
-        `Subject: ${data.subject}`,
-        `Budget: ${data.budget || "Not specified"}`,
-        "",
-        data.message,
-      ].join("\n"),
+      subject: `New enquiry: ${data.subject}`,
+      html: `<p><strong>${esc(data.name)}</strong> &lt;${esc(data.email)}&gt;</p>
+<p><strong>About:</strong> ${esc(data.subject)}${data.budget ? `<br><strong>Budget:</strong> ${esc(data.budget)}` : ""}</p>
+<p>${esc(data.message).replace(/\n/g, "<br>")}</p>`,
     });
-
+    if (error) throw new Error(error.message);
     return NextResponse.json({ success: true });
-  } catch (error) {
-    if (error instanceof z.ZodError) {
-      return NextResponse.json(
-        { error: "Invalid form data" },
-        { status: 400 },
-      );
-    }
-
-    console.error("[contact] Error:", error);
-    return NextResponse.json(
-      { error: "Failed to send message" },
-      { status: 500 },
-    );
+  } catch {
+    return NextResponse.json({ error: "We couldn’t send that just now.", fallback: true }, { status: 502 });
   }
 }

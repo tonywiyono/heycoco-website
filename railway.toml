@@ -4,7 +4,6 @@ buildCommand = "npm install --legacy-peer-deps && npm run build"
 
 [deploy]
 startCommand = "npm run start"
-releaseCommand = "npm run push:schema && npm run migrate"
 healthcheckPath = "/"
 healthcheckTimeout = 300
 restartPolicyType = "ON_FAILURE"
