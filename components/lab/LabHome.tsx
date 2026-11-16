@@ -25,16 +25,16 @@ export function LabHero() {
     <section id="top" className="bg-lab-bg px-2 pt-2 sm:px-3 sm:pt-3 lg:px-4 lg:pt-4">
       <div data-nav-hero className="relative mx-auto h-[calc(100svh-16px)] min-h-[560px] max-w-[1840px] overflow-hidden rounded-[24px] landscape:min-h-[300px] sm:h-[calc(100svh-24px)] lg:h-[min(56.55vw,1040px,calc(100svh-32px))] lg:min-h-[540px] lg:rounded-[34px] landscape:lg:min-h-[540px]">
         <Image
-          src="/images/hero-cat-garden.webp"
-          alt="An orange fluffy cat sitting on a sunny lawn beside a freshly planted sapling, a trowel and watering can nearby"
+          src="/images/hero-coco-box.webp"
+          alt="Coco, a fluffy orange cat with a Good Boy name tag, peeking down into a cardboard box against a blue sky"
           fill
           priority
           sizes="100vw"
-          className="object-cover object-[56%_50%] lg:object-center"
+          className="object-cover object-[50%_50%] lg:object-center"
         />
         {/* Phones: a haze behind the nav + headline: white in portrait (dark text), dark in landscape (white text) */}
         <div aria-hidden className="absolute inset-x-0 top-0 h-[55%] bg-gradient-to-b from-lab-bg/95 via-lab-bg/80 to-transparent landscape:from-black/50 landscape:via-black/20 lg:hidden" />
-        {/* Desktop: a soft shade down the left (headline) and along the bottom (intro, buttons) so white text reads on the bright garden */}
+        {/* Desktop: a soft shade down the left (headline) and along the bottom (intro, buttons) so white text reads on a bright photo */}
         <div aria-hidden className="absolute inset-0 hidden bg-[linear-gradient(90deg,rgba(10,8,4,0.42)_0%,rgba(10,8,4,0.16)_32%,transparent_55%),linear-gradient(0deg,rgba(10,8,4,0.38)_0%,transparent_32%)] lg:block" />
 
         {/* Headline: left wall on lg, top of the panel (under the floating nav) on phones */}
